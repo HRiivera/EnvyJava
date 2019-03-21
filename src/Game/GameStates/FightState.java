@@ -1,6 +1,7 @@
 package Game.GameStates;
 
 import Game.Entities.Dynamics.BaseHostileEntity;
+import Game.Entities.Dynamics.Player;
 import Main.GameSetUp;
 import Main.Handler;
 
@@ -100,6 +101,8 @@ public class FightState extends InWorldState{
 
 
         chooseTurn();
+        
+    
 
     }
 
@@ -153,16 +156,31 @@ public class FightState extends InWorldState{
                 }
 
             }
+            
+            
 
         }
 
         this.moveFightString();
+        
 
 
+ 
+		
+		// implement h (regenerate health)
+				if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
+					Player e = handler.getEntityManager().getPlayer();
+					 {
+						e.setHealth(e.getMaxHealth());
+						e.setMana(e.getMaxMana());
+					}
+					
+				}
+}
 
-    }
-
-    @Override
+		
+	
+	@Override
     public void render(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
 

@@ -88,8 +88,15 @@ public class Player extends BaseDynamicEntity implements Fighter {
 			}
 
 		}
-	}
+		
+		
+		}
+	
 
+	
+	
+	
+	
 
 	@Override
 	public void render(Graphics g) {

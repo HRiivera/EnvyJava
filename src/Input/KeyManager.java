@@ -34,6 +34,7 @@ public class KeyManager implements KeyListener {
 	public boolean pbutt=false;
 	public boolean runbutt=false;
 	public boolean debug=false;
+	public boolean rehealthbutt=false;
 
 
 	public KeyManager(){
@@ -68,6 +69,7 @@ public class KeyManager implements KeyListener {
 		pbutt = keys[KeyEvent.VK_ESCAPE];
 		runbutt = keys[KeyEvent.VK_SHIFT];
 		debug = keys[KeyEvent.VK_F7];
+		rehealthbutt= keys[KeyEvent.VK_H];
 
 	}
 
