@@ -21,12 +21,13 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 	private Rectangle player;
 	private boolean canMove;
+	private String secondFacing = "None";
 	public static boolean checkInWorld;
 
 	public static final int InMapWidthFrontAndBack = 15 * 3, InMapHeightFront = 27 * 3, InMapHeightBack = 23 * 3,
-							InMapWidthSideways = 13 * 3, InMapHeightSideways = 22 * 3, 
-							InAreaWidthFrontAndBack = 15 * 5, InAreaHeightFront = 27 * 5, InAreaHeightBack = 23 * 5,
-							InAreaWidthSideways = 13 * 5, InAreaHeightSideways = 22 * 5;
+			InMapWidthSideways = 13 * 3, InMapHeightSideways = 22 * 3, 
+			InAreaWidthFrontAndBack = 15 * 5, InAreaHeightFront = 27 * 5, InAreaHeightBack = 23 * 5,
+			InAreaWidthSideways = 13 * 5, InAreaHeightSideways = 22 * 5;
 
 	private int currentWidth, currentHeight;
 	public static boolean isinArea = false;
@@ -59,10 +60,10 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 	@Override
 	public void tick() {
-		
+
 		if (!GameSetUp.LOADING) {
 			levelUP();
-			
+
 			animDown.tick();
 			animUp.tick();
 			animRight.tick();
@@ -70,7 +71,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 			UpdateNextMove();
 			PlayerInput();
-
+			
 			if (GameSetUp.SWITCHING) {
 				switchingCoolDown++;
 			}
@@ -147,41 +148,92 @@ public class Player extends BaseDynamicEntity implements Fighter {
 		}
 
 		CheckForWalls();
-
-		if (handler.getKeyManager().down & canMove) {
+		if(handler.getKeyManager().up && handler.getKeyManager().left & canMove){
+			Move(true, speed*3/4);
+			Move(false, speed*3/4);
+			facing = "Left";
+			secondFacing = "UpLeft";
+		}
+		else if(handler.getKeyManager().up && handler.getKeyManager().right & canMove){
+			Move(true, -speed*3/4);
+			Move(false, speed*3/4);
+			facing = "Right";
+			secondFacing = "UpRight";
+		}
+		else if(handler.getKeyManager().down && handler.getKeyManager().left & canMove){
+			Move(true, speed*3/4);
+			Move(false, -speed*3/4);
+			facing = "Left";
+			secondFacing = "DownLeft";
+		}
+		else if(handler.getKeyManager().down && handler.getKeyManager().right & canMove){
+			Move(true, -speed*3/4);
+			Move(false, -speed*3/4);
+			facing = "Right";
+			secondFacing = "DownRight";
+		}
+		else if (handler.getKeyManager().down & canMove) {
 			Move(false, -speed);
 			facing = "Down";
+			secondFacing = "None";
 		} else if (handler.getKeyManager().up & canMove) {
 			Move(false, speed);
 			facing = "Up";
+			secondFacing = "None";
 		} else if (handler.getKeyManager().right & canMove) {
 			Move(true, -speed);
 			facing = "Right";
+			secondFacing = "None";
 		} else if (handler.getKeyManager().left & canMove) {
 			Move(true, speed);
 			facing = "Left";
-		} else {
+			secondFacing = "None";
+		} 
+		else {
 			isMoving = false;
 		}
 
 	}
 
 	private void PushPlayerBack() {
+		if(secondFacing != "None") {
+			canMove = false;
+			switch (secondFacing) {
+			case "UpLeft":
+				Move(true, -1);
+				Move(false, -1);
+				break;
+			case "UpRight":
+				Move(true, 1);
+				Move(false, -1);
+				break;
+			case "DownLeft":
+				Move(true, -1);
+				Move(false, 1);
+				break;
+			case "DownRight":
+				Move(true, 1);
+				Move(false, 1);
+				break;
+			}
+		}
+		else {
+			canMove = false;
+			switch (facing) {
+			case "Down":
+				Move(false, 1);
+				break;
+			case "Up":
+				Move(false, -1);
+				break;
+			case "Right":
+				Move(true, 1);
+				break;
+			case "Left":
+				Move(true, -1);
+				break;
+			}
 
-		canMove = false;
-		switch (facing) {
-		case "Down":
-			Move(false, 1);
-			break;
-		case "Up":
-			Move(false, -1);
-			break;
-		case "Right":
-			Move(true, 1);
-			break;
-		case "Left":
-			Move(true, -1);
-			break;
 		}
 	}
 
@@ -209,11 +261,11 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							handler.setYInWorldDisplacement(CaveArea.playerYSpawn);
 							GameSetUp.LOADING = true;
 							handler.setArea("Cave");
-							
-	                        handler.getGame().getMusicHandler().set_changeMusic("res/music/Cave.mp3");
-	                        handler.getGame().getMusicHandler().play();
-	                        handler.getGame().getMusicHandler().setVolume(0.4);
-							
+
+							handler.getGame().getMusicHandler().set_changeMusic("res/music/Cave.mp3");
+							handler.getGame().getMusicHandler().play();
+							handler.getGame().getMusicHandler().setVolume(0.4);
+
 							State.setState(handler.getGame().inWorldState.setArea(InWorldState.caveArea));
 						}
 
@@ -244,7 +296,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							if (iw.getType().equals("Start Exit")) {
 
 								handler.setXDisplacement(handler.getXDisplacement() - 450); // Sets the player x/y
-																							// outside the
+								// outside the
 								handler.setYDisplacement(handler.getYDisplacement() + 400); // Cave
 
 							} else if (iw.getType().equals("End Exit")) {
@@ -252,14 +304,14 @@ public class Player extends BaseDynamicEntity implements Fighter {
 								handler.setXDisplacement(InWorldState.caveArea.oldPlayerXCoord);// Sets the player x/y
 								handler.setYDisplacement(InWorldState.caveArea.oldPlayerYCoord);// outside theCave
 							}
-	
+
 							GameSetUp.LOADING = true;
 							handler.setArea("None");
-							
-	                    	handler.getGame().getMusicHandler().set_changeMusic("res/music/OverWorld.mp3");
-	                        handler.getGame().getMusicHandler().play();
-	                        handler.getGame().getMusicHandler().setVolume(0.2);
-							
+
+							handler.getGame().getMusicHandler().set_changeMusic("res/music/OverWorld.mp3");
+							handler.getGame().getMusicHandler().play();
+							handler.getGame().getMusicHandler().setVolume(0.2);
+
 							State.setState(handler.getGame().mapState);
 							CaveArea.isInCave = false;
 							checkInWorld = false;
@@ -462,12 +514,12 @@ public class Player extends BaseDynamicEntity implements Fighter {
 	public void setIntl(double intl) {
 		this.intl = intl;
 	}
-	
+
 	@Override
 	public double getMr() {
 		return mr;
 	}
-	
+
 	@Override
 	public void setMr(double mr) {
 		this.mr = mr;	
@@ -557,19 +609,19 @@ public class Player extends BaseDynamicEntity implements Fighter {
 	}
 
 	public boolean getWeaken() {
-		
+
 		return this.weakenS;
-		
+
 	}
-	
+
 	public void addXp(double xp) {
 		this.xp += xp;
 	}
-	
+
 	public double getLvlUpXp() {
 		return lvlUpExp;
 	}
-	
+
 	private void levelUP() {
 		if(xp >= lvlUpExp) {
 			xp-= lvlUpExp;
@@ -584,12 +636,12 @@ public class Player extends BaseDynamicEntity implements Fighter {
 			cons += 1 + 1 *(int)((lvl - 1)/2);
 			if(lvl%4 ==0)
 				evs++;
-			
+
 			lvl++;
-			
-			
+
+
 		}
-		
+
 	}
 
 }
