@@ -39,6 +39,11 @@ public class Images {
 	public static BufferedImage projectTitle;
 	public static BufferedImage envyTitle;
 	public static BufferedImage ghost;
+	
+	
+	
+	public static BufferedImage cobblestone;
+	
 
 
 	public static SpriteSheet playerSheet;
@@ -157,6 +162,11 @@ public class Images {
 			ghost = ImageIO.read(getClass().getResourceAsStream("/Sheets/ghost.png"));
 
 
+			
+			cobblestone = ImageIO.read(getClass().getResourceAsStream("/Sheets/cobblestone.png"));
+			
+			
+			
 			CaveMap = ImageIO.read(getClass().getResourceAsStream("/Worlds/CaveMap.png"));
 			tree = ImageIO.read(getClass().getResourceAsStream("/Sheets/Tree.png"));
 			title = ImageIO.read(getClass().getResourceAsStream("/Sheets/menuImage.png"));
