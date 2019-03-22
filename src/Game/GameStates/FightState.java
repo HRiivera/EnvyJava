@@ -31,6 +31,7 @@ public class FightState extends InWorldState{
     public int wordHeight = 150;
     public boolean passing = true;
     public int stringSpeed = 40;
+    public boolean QuestComplete=false;
 
     private int optionSelect, inputCoolDown;
     private int[] entityInfoX;
@@ -167,7 +168,7 @@ public class FightState extends InWorldState{
 
  
 		
-		// implement h (regenerate health)
+		// implement h (regenerate health and mana)
 				if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_H)) {
 					Player e = handler.getEntityManager().getPlayer();
 					 {
@@ -176,7 +177,7 @@ public class FightState extends InWorldState{
 					}
 					
 				}
-}
+    }
 
 		
 	
@@ -516,7 +517,7 @@ public class FightState extends InWorldState{
         uiManager.addObjects(new UIImageButton(handler.getWidth() * 38/60 - 128/2, 5*handler.getHeight()/6, 128, 64, Images.Skill, new ClickListlener() {
             @Override
             public void onClick() {
-                if(handler.getEntityManager().getPlayer().getMana()>=25) {
+                if(handler.getEntityManager().getPlayer().getMana()>=25 && QuestComplete) {
                     System.out.println("Skill");
                     skill = true;
                 }
