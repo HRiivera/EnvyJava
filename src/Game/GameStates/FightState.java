@@ -31,7 +31,7 @@ public class FightState extends InWorldState{
     public int wordHeight = 150;
     public boolean passing = true;
     public int stringSpeed = 40;
-    public boolean QuestComplete=false;
+    
 
     private int optionSelect, inputCoolDown;
     private int[] entityInfoX;
@@ -136,6 +136,10 @@ public class FightState extends InWorldState{
 
         else {
             if(!attacking&&!defense&&!skill&&turn>0&&enemy.getHealth()<=0&&!battleOver){
+            	
+            	if(handler.getEntityManager().getPlayer().getAcceptQuest()) {
+            		handler.getEntityManager().getPlayer().setQuestComplete(true);
+            	}
                 battleOver=true;
                 
                 handler.getGame().getMusicHandler().stop();
@@ -220,8 +224,7 @@ public class FightState extends InWorldState{
             }
         }
 
-        if(battleOver){
-
+        if(battleOver){	 
             g2.setFont(new Font("IMPACT", 3, this.wordHeight));
             if(handler.getEntityManager().getPlayer().getHealth()==0){
                 g.setColor(new Color(0,0,0,alpha+=2));
@@ -230,6 +233,8 @@ public class FightState extends InWorldState{
                 g.drawString("DEFEAT!",handler.getWidth()/3 - 50,handler.getHeight()/2);
 
             }else{
+            	
+            
                 g.setColor(new Color(255,255,255,alpha+=1));
                 g.fillRect(0,0,handler.getWidth(),handler.getHeight());
                 g2.setColor(Color.GREEN);
@@ -517,7 +522,7 @@ public class FightState extends InWorldState{
         uiManager.addObjects(new UIImageButton(handler.getWidth() * 38/60 - 128/2, 5*handler.getHeight()/6, 128, 64, Images.Skill, new ClickListlener() {
             @Override
             public void onClick() {
-                if(handler.getEntityManager().getPlayer().getMana()>=25 && QuestComplete) {
+                if(handler.getEntityManager().getPlayer().getMana()>=25 && handler.getEntityManager().getPlayer().getQuestComplete()) {
                     System.out.println("Skill");
                     skill = true;
                 }

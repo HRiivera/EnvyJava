@@ -34,6 +34,8 @@ public class Player extends BaseDynamicEntity implements Fighter {
 	public static boolean isinArea = false;
 	private boolean weakenS = false;
 	private int switchingCoolDown = 0;
+	boolean AcceptQuest=false;
+	boolean QuestComplete=false;
 
 	// Animations
 	private Animation animDown, animUp, animLeft, animRight;
@@ -501,6 +503,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 	String Class = "none", skill = "No Skill Available";
 	String[] buffs = {}, debuffs = {};
+	
 
 	@Override
 	public double getMaxHealth() {
@@ -688,6 +691,26 @@ public class Player extends BaseDynamicEntity implements Fighter {
 	public double getLvlUpXp() {
 		return lvlUpExp;
 	}
+	public void setAcceptQuest(boolean arg) {
+		this.AcceptQuest = arg;
+	}
+
+	public boolean getAcceptQuest() {
+
+		return this.AcceptQuest;
+
+	}public void setQuestComplete(boolean arg) {
+		this.QuestComplete = arg;
+	}
+
+	public boolean getQuestComplete() {
+
+		return this.QuestComplete;
+
+	}
+
+
+	
 
 	private void levelUP() {
 		if(xp >= lvlUpExp) {
