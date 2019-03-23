@@ -139,6 +139,7 @@ public class FightState extends InWorldState{
             	
             	if(handler.getEntityManager().getPlayer().getAcceptQuest()) {
             		handler.getEntityManager().getPlayer().setQuestComplete(true);
+            		handler.getEntityManager().getPlayer().setSkill("Freeze");
             	}
                 battleOver=true;
                 
