@@ -70,7 +70,7 @@ public class KeyManager implements KeyListener {
 		runbutt = keys[KeyEvent.VK_SHIFT];
 		debug = keys[KeyEvent.VK_F7];
 		rehealthbutt= keys[KeyEvent.VK_H];
-
+		
 	}
 
 	@Override

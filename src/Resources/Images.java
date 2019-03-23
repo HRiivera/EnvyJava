@@ -43,6 +43,9 @@ public class Images {
 	
 	
 	public static BufferedImage cobblestone;
+	public static BufferedImage E;
+	public static BufferedImage TownEntity;
+	public static BufferedImage TownEntityGUI;
 	
 
 
@@ -164,8 +167,9 @@ public class Images {
 
 			
 			cobblestone = ImageIO.read(getClass().getResourceAsStream("/Sheets/cobblestone.png"));
-			
-			
+			E = ImageIO.read(getClass().getResourceAsStream("/Buttons/E.png"));
+			TownEntity = ImageIO.read(getClass().getResourceAsStream("/Sheets/TownEntity.png"));
+			TownEntityGUI = ImageIO.read(getClass().getResourceAsStream("/Sheets/TownEntity.png"));
 			
 			CaveMap = ImageIO.read(getClass().getResourceAsStream("/Worlds/CaveMap.png"));
 			tree = ImageIO.read(getClass().getResourceAsStream("/Sheets/Tree.png"));
