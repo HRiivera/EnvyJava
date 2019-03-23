@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import Game.Entities.EntityManager;
+import Game.Entities.Dynamics.TownEntity;
 import Game.World.Walls;
 
 public class TownArea extends BaseArea {
@@ -32,6 +33,9 @@ public class TownArea extends BaseArea {
         playerRect = new Rectangle((int) handler.getWidth() / 2 - 5, (int) (handler.getHeight() / 2) + 300, 70, 70);
 
         this.entityManager = entityManager;
+        
+        
+        this.entityManager.AddEntity(new TownEntity(handler,1200,1000,Images.TownEntity));
 
         
 
