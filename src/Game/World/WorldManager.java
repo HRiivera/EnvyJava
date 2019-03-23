@@ -149,7 +149,12 @@ public class WorldManager {
 		
 		
 		//Rock
-		worldWalls.add(new Walls(handler,1640,75,100,100, "Wall"));
+		//worldWalls.add(new Walls(handler,1640,75,100,100, "Wall"));
+		
+		
+		
+		//Town
+		worldWalls.add(new Walls(handler,1080,480,200,200, "Door Town"));
 		
 		
 		

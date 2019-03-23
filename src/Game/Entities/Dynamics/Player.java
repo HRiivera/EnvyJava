@@ -8,6 +8,7 @@ import Game.GameStates.InWorldState;
 import Game.GameStates.State;
 import Game.World.Walls;
 import Game.World.InWorldAreas.CaveArea;
+import Game.World.InWorldAreas.TownArea;
 import Game.World.InWorldAreas.InWorldWalls;
 import Main.GameSetUp;
 import Main.Handler;
@@ -207,20 +208,20 @@ public class Player extends BaseDynamicEntity implements Fighter {
 			canMove = false;
 			switch (secondFacing) {
 			case "UpLeft":
-				Move(true, -1);
-				Move(false, -1);
+				Move(true, -3);
+				Move(false, -3);
 				break;
 			case "UpRight":
-				Move(true, 1);
-				Move(false, -1);
+				Move(true, 3);
+				Move(false, -3);
 				break;
 			case "DownLeft":
-				Move(true, -1);
-				Move(false, 1);
+				Move(true, -3);
+				Move(false, 3);
 				break;
 			case "DownRight":
-				Move(true, 1);
-				Move(false, 1);
+				Move(true, 3);
+				Move(false, 3);
 				break;
 			}
 		}
@@ -286,6 +287,29 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							handler.setArea("S");
 							State.setState(handler.getGame().inWorldState.setArea(InWorldState.SArea));
 						}
+						
+						if (w.getType().equals("Door Town")) {
+							checkInWorld = true;
+							InWorldState.caveArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+							InWorldState.caveArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+							TownArea.isInTown = true;
+							setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+							handler.setXInWorldDisplacement(TownArea.playerXSpawn);
+							handler.setYInWorldDisplacement(TownArea.playerYSpawn);
+							GameSetUp.LOADING = true;
+							handler.setArea("Town");
+					
+							//handler.getGame().getMusicHandler().set_changeMusic("res/music/Cave.mp3");
+							//handler.getGame().getMusicHandler().play();
+							//handler.getGame().getMusicHandler().setVolume(0.4);
+
+							State.setState(handler.getGame().inWorldState.setArea(InWorldState.townArea));
+							
+						}
+						
+						
+						
+						
 					}
 
 				}
@@ -303,7 +327,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							if (iw.getType().equals("Start Exit")) {
 
 								handler.setXDisplacement(handler.getXDisplacement() - 450); // Sets the player x/y
-								// outside the
+																							// outside the
 								handler.setYDisplacement(handler.getYDisplacement() + 400); // Cave
 
 							} else if (iw.getType().equals("End Exit")) {
@@ -328,6 +352,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 					}
 				}
 			}
+			
 
 			else if (Player.isinArea) {
 
@@ -340,6 +365,41 @@ public class Player extends BaseDynamicEntity implements Fighter {
 					}
 				}
 			}
+			
+			else if (TownArea.isInTown) {
+
+				for (InWorldWalls iw : TownArea.townWalls) {
+
+					if (nextArea.intersects(iw)) {
+						if (iw.getType().equals("Wall"))
+							PushPlayerBack();
+						else if(iw.getType().equals("Door S")){
+							
+							handler.setXDisplacement(-200);
+							handler.setYDisplacement(150);
+							
+							GameSetUp.LOADING = true;
+							handler.setArea("None");
+
+							handler.getGame().getMusicHandler().set_changeMusic("res/music/OverWorld.mp3");
+							handler.getGame().getMusicHandler().play();
+							handler.getGame().getMusicHandler().setVolume(0.2);
+
+							State.setState(handler.getGame().mapState);
+							CaveArea.isInCave = false;
+							checkInWorld = false;
+							System.out.println("Left Town");
+							setWidthAndHeight(InMapWidthFrontAndBack, InMapHeightFront);
+							
+							
+						}
+					}
+					
+				}
+			}
+			
+			
+			
 		}
 	}
 

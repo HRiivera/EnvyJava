@@ -43,7 +43,7 @@ public class Images {
 	
 	
 	public static BufferedImage cobblestone;
-	
+	public static BufferedImage Town;
 
 
 	public static SpriteSheet playerSheet;
@@ -96,6 +96,7 @@ public class Images {
 	public static BufferedImage Loading;
 	public static Image ScaledCave;
 	public static Image ScaledArea;
+	public static Image ScaledTown;
 	public static BufferedImage tree;
 
 	public Images() {
@@ -163,7 +164,10 @@ public class Images {
 
 
 			
+			
 			cobblestone = ImageIO.read(getClass().getResourceAsStream("/Sheets/cobblestone.png"));
+			Town = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootcrop.png"));
+			
 			
 			
 			
@@ -719,17 +723,17 @@ public class Images {
 			e.printStackTrace();
 		}
 		
-		Scaledmap[0] = Images.map[0].getScaledInstance(8000, 6000, Image.SCALE_SMOOTH);
-		Scaledmap[1] = Images.map[1].getScaledInstance(8000, 6000, Image.SCALE_SMOOTH);
-		Scaledmap[2] = Images.map[2].getScaledInstance(8000, 6000, Image.SCALE_SMOOTH);
+		Scaledmap[0] = Images.map[0].getScaledInstance(8000, 6000, Image.SCALE_FAST);
+		Scaledmap[1] = Images.map[1].getScaledInstance(8000, 6000, Image.SCALE_FAST);
+		Scaledmap[2] = Images.map[2].getScaledInstance(8000, 6000, Image.SCALE_FAST);
 		
 		map[0] = toBufferedImage(Scaledmap[0]); 
 		map[1] = toBufferedImage(Scaledmap[1]);
 		map[2] = toBufferedImage(Scaledmap[2]);
 		map[3] = toBufferedImage(Scaledmap[1]);
 		
-		ScaledCave = Images.CaveMap.getScaledInstance(3680, 4000, Image.SCALE_SMOOTH); // 368x400 pixel image
-
+		ScaledCave = Images.CaveMap.getScaledInstance(3680, 4000, Image.SCALE_FAST); // 368x400 pixel image
+		ScaledTown = Images.Town.getScaledInstance(4960, 4800, Image.SCALE_FAST); // 992x960 pixel image  x5
 	}
 
 	
