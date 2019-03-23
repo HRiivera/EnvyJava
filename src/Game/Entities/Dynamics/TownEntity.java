@@ -1,4 +1,4 @@
-package Game.Entities.Dynamics;
+ package Game.Entities.Dynamics;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -27,15 +27,15 @@ public class TownEntity extends BaseStaticEntity {
 	public TownEntity(Handler handler, int xPosition, int yPosition, BufferedImage townEntity) {
 		super(handler, xPosition, yPosition);
 		width = 100;
-		height = 100;
+		height = 200;
 		
 		this.setXOffset(xPosition);
 		this.setYOffset(yPosition);
 		
 		ir.x=xPosition;
 		ir.y=yPosition;
-		ir.width = 32;
-		ir.height = 55;
+		ir.width = 100;
+		ir.height = 100;
 		
 		 originalX=xPosition;
 		 originalY=yPosition;
@@ -55,20 +55,19 @@ public class TownEntity extends BaseStaticEntity {
 	@Override
 	public void render(Graphics g) {
 		
-		g.drawRect(ir.x, ir.y, ir.width+25, ir.height+25);
+		g.drawRect(ir.x, ir.y, ir.width, ir.height);
 		
 		if (HI) {
-			g.drawImage(Images.TownEntity, (int)(handler.getXDisplacement() + xPosition),(int)( handler.getYDisplacement() + yPosition), width, height, null);
-			collision = new Rectangle((int)(handler.getXDisplacement() + xPosition + 35), (int)(handler.getYDisplacement() + yPosition + 50), width/4, height/2);
+			g.drawImage(Images.TownEntity, (int)(handler.getXInWorldDisplacement() + xPosition),(int)( handler.getYInWorldDisplacement() + yPosition), width, height, null);
+			collision = new Rectangle((int)(handler.getXInWorldDisplacement() + xPosition + 35), (int)(handler.getYInWorldDisplacement() + yPosition + 50), width/4, height/2);
 			
 			
 	    	
 		} else {
-			g.drawImage(Images.TownEntity, (int)(handler.getXDisplacement() + xPosition),(int)( handler.getYDisplacement() + yPosition), width, height, null);
+			g.drawImage(Images.TownEntity, (int)(handler.getXInWorldDisplacement() + xPosition),(int)( handler.getYInWorldDisplacement() + yPosition), width, height, null);
 		};
 		
 		checkForPlayer(g);
-		g.setFont(new Font("Times New Roman",Font.BOLD,15) );
 	}
 	
 	
@@ -76,8 +75,8 @@ public class TownEntity extends BaseStaticEntity {
 	@Override
 	public void tick() {
 		
-		  ir.x = handler.getXDisplacement() + originalX+25;
-	        ir.y = handler.getYDisplacement() + originalY+100;
+		  ir.x = handler.getXInWorldDisplacement() + originalX+25;
+	        ir.y = handler.getYInWorldDisplacement() + originalY+200;
 	        if(handler.getKeyManager().attbut) {
 	        	text=!text;
 	        }
@@ -97,6 +96,7 @@ public class TownEntity extends BaseStaticEntity {
 		
 
 		if(ir.intersects(handler.getEntityManager().getPlayer().getCollision())&& !EP){
+
 			g.drawImage(Images.E,(int) xPosition-140,(int) yPosition-440,32,32,null);
 			
 			if(handler.getKeyManager().attbut) {
@@ -104,11 +104,14 @@ public class TownEntity extends BaseStaticEntity {
 				handler.getEntityManager().getPlayer().AcceptQuest=true;
 			}
 			
+
+			g.drawImage(Images.E,(int) ir.x+10,(int) ir.y-50,32,32,null);
+
 			
 			
 			if(text) {
 				
-			g.setColor(Color.YELLOW);
+			g.setColor(Color.BLACK);
 	    	g.setFont(new Font("Times New Roman",Font.BOLD,20));
 	    	g.drawString("Defeat an Enemy to unlock a skill ",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+400);
 	    	

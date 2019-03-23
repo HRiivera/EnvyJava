@@ -35,7 +35,7 @@ public class TownArea extends BaseArea {
         this.entityManager = entityManager;
         
         
-        this.entityManager.AddEntity(new TownEntity(handler,1200,1000,Images.TownEntity));
+        this.entityManager.AddEntity(new TownEntity(handler,2160,2480,Images.TownEntity));
 
         
 
