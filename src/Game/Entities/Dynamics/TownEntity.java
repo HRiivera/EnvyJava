@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import Game.Entities.Statics.BaseStaticEntity;
 import Main.Handler;
 import Resources.Images;
+import javafx.scene.input.KeyCode;
 
 public class TownEntity extends BaseStaticEntity {
 	
@@ -20,6 +22,7 @@ public class TownEntity extends BaseStaticEntity {
 	private int originalX;
 	private int originalY;
 	public Boolean text=false;
+	
 	
 	public TownEntity(Handler handler, int xPosition, int yPosition, BufferedImage townEntity) {
 		super(handler, xPosition, yPosition);
@@ -95,6 +98,11 @@ public class TownEntity extends BaseStaticEntity {
 
 		if(ir.intersects(handler.getEntityManager().getPlayer().getCollision())&& !EP){
 			g.drawImage(Images.E,(int) xPosition-140,(int) yPosition-440,32,32,null);
+			
+			if(handler.getKeyManager().attbut) {
+				
+				handler.getEntityManager().getPlayer().AcceptQuest=true;
+			}
 			
 			
 			
