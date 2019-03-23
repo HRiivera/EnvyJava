@@ -105,17 +105,24 @@ public class TownEntity extends BaseStaticEntity {
 			}
 			
 
+
+			g.drawImage(Images.E,(int) ir.x+10,(int) ir.y-50,32,32,null);
+
+			
+
 			
 			if(text) {
 				
 			g.setColor(Color.BLACK);
 	    	g.setFont(new Font("Times New Roman",Font.BOLD,20));
-	    	g.drawString("Defeat an Enemy to unlock a skill ",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+400);
 	    	
+	    	if(handler.getEntityManager().getPlayer().getQuestComplete()) {
+	    	g.drawString("You've unclocked a new  Freeze skill! and a new cave area to explore!",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+425);
 	    	
-	    	g.drawString("You've unclocked a new skill!",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+425);
-	    	
-			
+	    	}else {
+	    		g.drawString("Defeat an Enemy to unlock a skill ",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+400);
+		    	
+	    	}
 			
 			}
 		}else if(ir.intersects(handler.getEntityManager().getPlayer().getCollision()) && EP){
