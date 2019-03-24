@@ -47,10 +47,21 @@ public class Images {
 	public static BufferedImage E;
 	public static BufferedImage TownEntity;
 	public static BufferedImage TownEntityGUI;
+	public static BufferedImage[] Town;
 	
-
-	public static BufferedImage Town;
-
+	
+	public static SpriteSheet pikaSheet;
+	public static BufferedImage[] pika_front;
+	public static BufferedImage[] pika_left;
+	public static BufferedImage[] pika_right;
+	public static BufferedImage[] pika_back;
+	public static BufferedImage[] pika_frontright;
+	public static BufferedImage[] pika_frontleft;
+	public static BufferedImage[] pika_backleft;
+	public static BufferedImage[] pika_backright;
+	public static BufferedImage[] pika_idle;
+	
+	
 
 
 	public static SpriteSheet playerSheet;
@@ -103,7 +114,7 @@ public class Images {
 	public static BufferedImage Loading;
 	public static Image ScaledCave;
 	public static Image ScaledArea;
-	public static Image ScaledTown;
+	public static Image ScaledTown[];
 	public static BufferedImage tree;
 
 	public Images() {
@@ -118,6 +129,8 @@ public class Images {
 		
 		map = new BufferedImage[4];
 		Scaledmap = new Image[3];
+		Town = new BufferedImage[4];
+		ScaledTown = new Image[3];
 
 		battleBackground = new BufferedImage[4];
 
@@ -135,6 +148,21 @@ public class Images {
 		player_right = new BufferedImage[4];
 		player_left = new BufferedImage[4];
 		player_back = new BufferedImage[4];
+		
+		
+		pika_front = new BufferedImage[2];
+		pika_left = new BufferedImage[2];
+		pika_right = new BufferedImage[2];
+		pika_back = new BufferedImage[2];
+		pika_frontright = new BufferedImage[2];
+		pika_frontleft = new BufferedImage[2];
+		pika_backleft = new BufferedImage[2];
+		pika_backright = new BufferedImage[2];
+		
+		
+		
+		
+		
 
 		PEnemyIdle = new BufferedImage[7];
 		WEnemyIdle = new BufferedImage[3];
@@ -154,6 +182,11 @@ public class Images {
 			map[0] = ImageIO.read(getClass().getResourceAsStream("/Worlds/map.png"));
 			map[1] = ImageIO.read(getClass().getResourceAsStream("/Worlds/map2.png"));
 			map[2] = ImageIO.read(getClass().getResourceAsStream("/Worlds/map3.png"));
+			
+			
+			Town[0] = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootcrop.png"));
+			Town[1] = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootcrop2.png"));
+			Town[2] = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootcrop3.png"));
 			
 			smokeHouseSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/House.png")));
 			statueSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/statueSheet.png")));
@@ -178,11 +211,9 @@ public class Images {
 			TownEntity = ImageIO.read(getClass().getResourceAsStream("/Sheets/TownEntity.png"));
 			TownEntityGUI = ImageIO.read(getClass().getResourceAsStream("/Sheets/TownEntity.png"));
 
-			Town = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootcrop.png"));
-			
-			
 			
 
+			
 			
 			CaveMap = ImageIO.read(getClass().getResourceAsStream("/Worlds/CaveMap.png"));
 			tree = ImageIO.read(getClass().getResourceAsStream("/Sheets/Tree.png"));
@@ -274,6 +305,38 @@ public class Images {
 			player_back[3] = playerSheet.crop(48, 69, 15, 23);
 
 			player_attack = ImageIO.read(getClass().getResourceAsStream("/Sheets/playerAttack.png"));
+			
+			
+			pikaSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/PikaSpriteSheet.png")));
+			
+			pika_front[0] = pikaSheet.crop(26, 0, 20, 26);
+			pika_front[1] = pikaSheet.crop(48, 0, 20, 26);
+		
+			pika_frontleft[0] = pikaSheet.crop(95, 0, 22, 26);
+			pika_frontleft[1] = pikaSheet.crop(118, 0, 22, 26);
+			
+			pika_left[0] = pikaSheet.crop(166, 0, 22, 26);
+			pika_left[1] = pikaSheet.crop(189, 0, 22, 26);
+			
+			pika_backleft[0] = pikaSheet.crop(238, 0, 25, 26);
+			pika_backleft[1] = pikaSheet.crop(263, 0, 25, 26);
+			
+			pika_back[0] = pikaSheet.crop(316, 0, 22, 26);
+			pika_back[1] = pikaSheet.crop(340, 0, 22, 26);
+			
+			pika_backright[0] = pikaSheet.crop(392, 74, 25, 26);
+			pika_backright[1] = pikaSheet.crop(417, 74, 25, 26);
+			
+			pika_right[0] = pikaSheet.crop(469, 74, 22 ,26);
+			pika_right[1] = pikaSheet.crop(492, 74, 22, 26);
+			
+			pika_frontright[0] = pikaSheet.crop(540, 74, 22 ,26);
+			pika_frontright[1] = pikaSheet.crop(563, 74, 22 ,26);
+			
+			
+			
+			
+			
 
 
 
@@ -739,14 +802,24 @@ public class Images {
 		Scaledmap[0] = Images.map[0].getScaledInstance(8000, 6000, Image.SCALE_FAST);
 		Scaledmap[1] = Images.map[1].getScaledInstance(8000, 6000, Image.SCALE_FAST);
 		Scaledmap[2] = Images.map[2].getScaledInstance(8000, 6000, Image.SCALE_FAST);
-		
+				
 		map[0] = toBufferedImage(Scaledmap[0]); 
 		map[1] = toBufferedImage(Scaledmap[1]);
 		map[2] = toBufferedImage(Scaledmap[2]);
 		map[3] = toBufferedImage(Scaledmap[1]);
 		
+		ScaledTown[0] = Images.Town[0].getScaledInstance(4960, 4800, Image.SCALE_FAST); // 992x960 pixel image  x5
+		ScaledTown[1] = Images.Town[1].getScaledInstance(4960, 4800, Image.SCALE_FAST); // 992x960 pixel image  x5
+		ScaledTown[2] = Images.Town[2].getScaledInstance(4960, 4800, Image.SCALE_FAST); // 992x960 pixel image  x5
+		
+		Town[0] = toBufferedImage(ScaledTown[1]);
+		Town[1] = toBufferedImage(ScaledTown[0]);
+		Town[2] = toBufferedImage(ScaledTown[2]);
+		Town[3] = toBufferedImage(ScaledTown[0]);
+		
+		
+		
 		ScaledCave = Images.CaveMap.getScaledInstance(3680, 4000, Image.SCALE_FAST); // 368x400 pixel image
-		ScaledTown = Images.Town.getScaledInstance(4960, 4800, Image.SCALE_FAST); // 992x960 pixel image  x5
 	}
 
 	
@@ -887,7 +960,8 @@ public class Images {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		return null;
+		return null;	
 	}
+	
 
 }

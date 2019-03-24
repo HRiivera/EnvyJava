@@ -9,12 +9,15 @@ import java.awt.image.BufferedImage;
 import Game.GameStates.FightState;
 import Game.GameStates.State;
 import Main.Handler;
+import Resources.Animation;
 import Resources.Images;
 
 public class EnemyOne extends BaseHostileEntity implements Fighter{
 
     Rectangle enemyOne;
     int width, height;
+    private Animation animDown, animUp, animRight, animLeft, animDownRight, animDownLeft, animUpLeft, animUpRight;
+    private int animSpeed = 150;
 
     public EnemyOne(Handler handler, int xPosition, int yPosition, String state, String name, String area, BufferedImage[] animFrames) {
         super(handler, yPosition, yPosition,state,name,area,animFrames);
@@ -27,13 +30,41 @@ public class EnemyOne extends BaseHostileEntity implements Fighter{
 
         this.foundState = state;
         enemyOne = new Rectangle();
+        
+        	
+
+        animDown = new Animation(animSpeed, Images.pika_front);
+        animUp = new Animation(animSpeed, Images.pika_back);
+        animRight = new Animation(animSpeed, Images.pika_right);
+        animLeft = new Animation(animSpeed, Images.pika_left);
+        animDownRight = new Animation(animSpeed, Images.pika_frontright);
+        animDownLeft = new Animation(animSpeed, Images.pika_frontleft);
+        animUpLeft = new Animation(animSpeed, Images.pika_backleft);
+        animUpRight = new Animation(animSpeed, Images.pika_backright);
+        
+        
     }
 
     @Override
     public void tick() {
-
+    	animDown.tick();
+		animUp.tick();
+		animRight.tick();
+		animLeft.tick();
+		animUpRight.tick();
+		animUpLeft.tick();
+		animDownLeft.tick();
+		animDownRight.tick();
+    	
         if(!Player.isinArea)super.tick();
-
+        animDown.tick();
+		animUp.tick();
+		animRight.tick();
+		animLeft.tick();
+		animUpRight.tick();
+		animUpLeft.tick();
+		animDownLeft.tick();
+		animDownRight.tick();
     }
 
     @Override
@@ -56,7 +87,9 @@ public class EnemyOne extends BaseHostileEntity implements Fighter{
 
             g2.setColor(Color.black);
 
-            g.drawImage(Images.ghost,enemyOne.x,enemyOne.y,enemyOne.width,enemyOne.height,null);
+            g2.drawImage(getCurrentAnimationFrameExtended(animDown, animUp, animLeft, animRight, Images.pika_front, Images.pika_back,
+						Images.pika_left, Images.pika_right, animUpRight, animUpLeft, animDownLeft, animDownRight, Images.pika_backright,
+						 Images.pika_backleft, Images.pika_frontleft, Images.pika_frontright),enemyOne.x,enemyOne.y,enemyOne.width,enemyOne.height,null);
 
             if (enemyOne.intersects(handler.getEntityManager().getPlayer().getCollision())) {
                 handler.getEntityManager().getPlayer().facing = "Left";

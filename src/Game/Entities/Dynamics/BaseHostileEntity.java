@@ -11,6 +11,7 @@ import Game.World.InWorldAreas.InWorldWalls;
 import Game.World.Walls;
 import Main.GameSetUp;
 import Main.Handler;
+import Resources.Animation;
 
 public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 
@@ -21,11 +22,13 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 	private int count;
 	private int directionMov;
 	double chaseSpeed = 1.5;
+	private String secondFacing = "None";
 	boolean canMove = true;
 	public String foundState;
 	public String name="enemy";
 	public String Area;//None for MapState
-    public String type;//class it is ex: "EnemyOne"
+	public String type;//class it is ex: "EnemyOne"
+	
 
 	public BaseHostileEntity(Handler handler, int xPosition, int yPosition, String state,String name,String area, BufferedImage[] animFrames) {
 		super(handler, xPosition, yPosition,animFrames);
@@ -33,7 +36,7 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 		chasingPlayer = false;
 		Area=area;
 		count = 0;
-		directionMov = 4;
+		directionMov = 9;
 		this.name = name;
 		nextArea = new Rectangle();
 		rand = new Random();
@@ -43,121 +46,199 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 
 	@Override
 	public void tick() {
-			super.tick();
-			if(handler.getArea().equals(this.Area)) {
-	            UpdateNextMove();
-	            checkCollision();
-	
-	
-	            if (canMove) {
-	                count++;
-	                if (count >= 100 + rand.nextInt(350)) {
-	
-	                    directionMov = rand.nextInt(5); // 0 (idle), 1(up), 2(down), 3(left), 4(right)
-	
-	                    count = 0;
-	                }
-	
-	                PlayerDetector();
-	
-	                if (!chasingPlayer) {
-	                    Move();
-	                } else {
-	                    Chase();
-	                }
-	            }
-	            canMove = true;
-	        }
+		super.tick();
+		if(handler.getArea().equals(this.Area)) {
+			UpdateNextMove();
+			checkCollision();
+
+
+			if (canMove) {
+				count++;
+				if (count >= 100 + rand.nextInt(350)) {
+					
+					directionMov = rand.nextInt(9); // 0 (idle), 1(up), 2(down), 3(left), 4(right)
+					if(directionMov==0) {isMoving=false;}
+					else {isMoving=true;}
+					count = 0;
+				}
+
+				PlayerDetector();
+
+				if (!chasingPlayer) {
+					Move();
+				} else {
+					Chase();
+				}
+			}
+			canMove = true;
+		}
+		
+		
 	}
 
-    private void checkCollision() {
-	    if(foundState.equals("MapState")){
-            for(Walls w:handler.getWorldManager().getWalls()){
-                if(w.intersects(nextArea)) {
-                    canMove = false;
-                    switch (directionMov) {
-                        case 0://idle
-                            break;
-                        case 1://down
-                            this.setYOffset(this.getYOffset() - speed);
-                            break;
-                        case 2://up
-                            this.setYOffset(this.getYOffset() + speed);
-                            break;
 
-                        case 3://left
-                            this.setXOffset(this.getXOffset() + speed);
-                            break;
 
-                        case 4://right
-                            this.setXOffset(this.getXOffset() - speed);
-                            break;
-                    }
-                }
-            }
-        }else if(foundState.equals("InWorldState")){
-            for(InWorldWalls w:InWorldState.currentArea.getWalls()){
-                if(w.intersects(nextArea)) {
-                    canMove = false;
-                    switch (directionMov) {
-                        case 1://down
-                            this.setYOffset(this.getYOffset() - speed);
-                            break;
-                        case 2://up
-                            this.setYOffset(this.getYOffset() + speed);
-                            break;
+	public BufferedImage getCurrentAnimationFrameExtended( Animation animDown, Animation animUp, Animation animLeft, Animation animRight,
+			BufferedImage[] front,BufferedImage[] back,BufferedImage[] left,BufferedImage[] right,
+			Animation animUpRight, Animation animUpLeft, Animation animDownLeft, Animation animDownRight,
+			BufferedImage[] UpRight, BufferedImage[] UpLeft, BufferedImage[] DownLeft, BufferedImage[] DownRight) {
+		BufferedImage frame = null;
+		if(isMoving) {
+			switch (facing) {
+			case "Down":
+				frame =  animDown.getCurrentFrame();
+				break;
+			case "Up":
+				frame =  animUp.getCurrentFrame();
+				break;
+			case "Right":
+				frame = animRight.getCurrentFrame();
+				break;
+			case "Left":
+				frame = animLeft.getCurrentFrame();
+				break;
+			case "UpRight":
+				frame = animUpRight.getCurrentFrame();
+				break;
+			case "UpLeft":
+				frame = animUpLeft.getCurrentFrame();
+				break;
+			case "DownLeft":
+				frame = animDownLeft.getCurrentFrame();
+				break;
+			case "DownRight":
+				frame = animDownRight.getCurrentFrame();
+			}
+		}
+		else {
+			switch (facing) {
+			case "Down":
+				frame =  front[0];
+				break;
+			case "Up":
+				frame =  back[0];
+				break;
+			case "Right":
+				frame = right[0];
+				break;
+			case "Left":
+				frame = left[0];
+				break;
+			case "UpRight":
+				frame = UpRight[0];
+				break;
+			case "UpLeft":
+				frame = UpLeft[0];
+				break;
+			case "DownLeft":
+				frame = DownLeft[0];
+				break;
+			case "DownRight":
+				frame = DownRight[0];
+			}
+		}
+		return frame;
+	}
 
-                        case 3://left
-                            this.setXOffset(this.getXOffset() + speed);
-                            break;
 
-                        case 4://right
-                            this.setXOffset(this.getXOffset() - speed);
-                            break;
-                    }
-                }
-            }
-        }
-    }
 
-    private void UpdateNextMove() {
+
+	private void checkCollision() {
+		if(foundState.equals("MapState")){
+			for(Walls w:handler.getWorldManager().getWalls()){
+				if(w.intersects(nextArea)) {
+					canMove = false;
+					switch (directionMov) {
+					case 0://idle
+						break;
+					case 1://down
+						this.setYOffset(this.getYOffset() - speed);
+						break;
+					case 2://up
+						this.setYOffset(this.getYOffset() + speed);
+						break;
+
+					case 3://left
+						this.setXOffset(this.getXOffset() + speed);
+						break;
+
+					case 4://right
+						this.setXOffset(this.getXOffset() - speed);
+						break;
+					}
+				}
+			}
+		}else if(foundState.equals("InWorldState")){
+			for(InWorldWalls w:InWorldState.currentArea.getWalls()){
+				if(w.intersects(nextArea)) {
+					canMove = false;
+					switch (directionMov) {
+					case 1://down
+						this.setYOffset(this.getYOffset() - speed);
+						break;
+					case 2://up
+						this.setYOffset(this.getYOffset() + speed);
+						break;
+
+					case 3://left
+						this.setXOffset(this.getXOffset() + speed);
+						break;
+
+					case 4://right
+						this.setXOffset(this.getXOffset() - speed);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	private void UpdateNextMove() {
 		if(foundState.equals("MapState")) {
 			switch (facing) {
-				case "Up":
-					nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement(), (int) getYOffset() + handler.getYDisplacement() - 10, getCollision().width, getCollision().height / 2);
+			case "Up":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement(), (int) getYOffset() + handler.getYDisplacement() - 10, getCollision().width, getCollision().height / 2);
 
-					break;
-				case "Down":
-					nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement(), (int) getYOffset() + handler.getYDisplacement() + getCollision().height, getCollision().width, 10);
+				break;
+			case "Down":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement(), (int) getYOffset() + handler.getYDisplacement() + getCollision().height, getCollision().width, 10);
 
-					break;
-				case "Left":
-					nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement() - 10, (int) getYOffset() + handler.getYDisplacement(), 10, getCollision().height);
+				break;
+			case "Left":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement() - 10, (int) getYOffset() + handler.getYDisplacement(), 10, getCollision().height);
 
-					break;
-				case "Right":
-					nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement() + getCollision().width, (int) getYOffset() + handler.getYDisplacement(), 10, getCollision().height);
+				break;
+			case "Right":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement() + getCollision().width, (int) getYOffset() + handler.getYDisplacement(), 10, getCollision().height);
 
-					break;
+				break;
+			case "UpRight":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXDisplacement(), (int) getYOffset() + handler.getYDisplacement() - 10, getCollision().width, getCollision().height / 2);
+
+
+
+
+
+
 			}
 		}else if(foundState.equals("InWorldState")){
 			switch (facing) {
-				case "Up":
-					nextArea = new Rectangle((int) getXOffset() + handler.getXInWorldDisplacement(), (int) getYOffset() + handler.getYInWorldDisplacement() - 10, getCollision().width, getCollision().height / 2);
+			case "Up":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXInWorldDisplacement(), (int) getYOffset() + handler.getYInWorldDisplacement() - 10, getCollision().width, getCollision().height / 2);
 
-					break;
-				case "Down":
-					nextArea = new Rectangle((int) getXOffset() + handler.getXInWorldDisplacement(), (int) getYOffset() + handler.getYInWorldDisplacement() + getCollision().height, getCollision().width, 10);
+				break;
+			case "Down":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXInWorldDisplacement(), (int) getYOffset() + handler.getYInWorldDisplacement() + getCollision().height, getCollision().width, 10);
 
-					break;
-				case "Left":
-					nextArea = new Rectangle((int) getXOffset() + handler.getXInWorldDisplacement() - 10, (int) getYOffset() + handler.getYInWorldDisplacement(), 10, getCollision().height);
+				break;
+			case "Left":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXInWorldDisplacement() - 10, (int) getYOffset() + handler.getYInWorldDisplacement(), 10, getCollision().height);
 
-					break;
-				case "Right":
-					nextArea = new Rectangle((int) getXOffset() + handler.getXInWorldDisplacement() + getCollision().width, (int) getYOffset() + handler.getYInWorldDisplacement(), 10, getCollision().height);
+				break;
+			case "Right":
+				nextArea = new Rectangle((int) getXOffset() + handler.getXInWorldDisplacement() + getCollision().width, (int) getYOffset() + handler.getYInWorldDisplacement(), 10, getCollision().height);
 
-					break;
+				break;
 			}
 		}
 	}
@@ -190,6 +271,17 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 	}
 
 	protected void Chase() {
+
+
+
+
+
+
+
+
+
+
+
 		if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) > this.getXOffset() && canMove) {
 			facing = "Right";
 			this.setXOffset(this.getXOffset() + chaseSpeed);
@@ -214,223 +306,244 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 	private void Move() {
 
 		switch (directionMov) {
-			case 0:
-				break;
-			case 1:
-				facing = "Down";
-				this.setYOffset(this.getYOffset() + speed);
-				break;
+		case 0:
+			break;
+		case 1:
+			facing = "Down";
+			this.setYOffset(this.getYOffset() + speed);
+			break;
 
-			case 2:
-				facing = "Up";
-				this.setYOffset(this.getYOffset() - speed);
-				break;
+		case 2:
+			facing = "Up";
+			this.setYOffset(this.getYOffset() - speed);
+			break;
 
-			case 3:
-				facing = "Left";
-				this.setXOffset(this.getXOffset() - speed);
-				break;
+		case 3:
+			facing = "Left";
+			this.setXOffset(this.getXOffset() - speed);
+			break;
 
-			case 4:
-				facing = "Right";
-				this.setXOffset(this.getXOffset() + speed);
-				break;
+		case 4:
+			facing = "Right";
+			this.setXOffset(this.getXOffset() + speed);
+			break;
+		case 5:
+			facing = "UpRight";
+			this.setYOffset(this.getYOffset() - speed);
+			this.setXOffset(this.getXOffset() + speed);
+			break;
+		case 6:
+			facing = "UpLeft";
+			this.setYOffset(this.getYOffset() - speed);
+			this.setXOffset(this.getXOffset() - speed);
+			break;
+		case 7:
+			facing = "DownLeft";
+			this.setYOffset(this.getYOffset() + speed*3/4);
+			this.setXOffset(this.getXOffset() - speed*3/4);
+			break;
+		case 8:
+			facing = "DownRight";
+			this.setYOffset(this.getYOffset() + speed*3/4);
+			this.setXOffset(this.getXOffset() + speed*3/4);
+			break;
+
 		}
 	}
 
 
-    //GETTERS AND SETTERS FOR FIGHT STATS
+	//GETTERS AND SETTERS FOR FIGHT STATS
 
-    double health=100,mana=25,xp=0l,lvl=1,defense=12,str=8,intl=20, mr = 10,cons=20,acc=10,evs=2,initiative=10, maxHealth = 100, maxMana = 100;
-    boolean isDead = false;
-    String Class = "none",skill = "none";
-    String[] buffs = {},debuffs = {};
+	double health=100,mana=25,xp=0l,lvl=1,defense=12,str=8,intl=20, mr = 10,cons=20,acc=10,evs=2,initiative=10, maxHealth = 100, maxMana = 100;
+	boolean isDead = false;
+	String Class = "none",skill = "none";
+	String[] buffs = {},debuffs = {};
 
-    @Override
-    public double getHealth() {
-        return health;
-    }
+	@Override
+	public double getHealth() {
+		return health;
+	}
 
-    @Override
-    public double getMaxHealth() {
-        return maxHealth;
-    }
-    @Override
-    public double getMaxMana() {
-        return maxMana;
-    }
+	@Override
+	public double getMaxHealth() {
+		return maxHealth;
+	}
+	@Override
+	public double getMaxMana() {
+		return maxMana;
+	}
 
-    @Override
-    public void setHealth(double health) {
-        this.health=health;
-    }
-    
-    
-    public void setMaxHealth(double maxHealth) {
-        this.maxHealth=maxHealth;
-    }
+	@Override
+	public void setHealth(double health) {
+		this.health=health;
+	}
 
-    @Override
-    public double getMana() {
-        return mana;
-    }
 
-    @Override
-    public void setMana(double mana) {
-        this.mana=mana;
-    }
+	public void setMaxHealth(double maxHealth) {
+		this.maxHealth=maxHealth;
+	}
 
-    @Override
-    public double getXp() {
-        return xp;
-    }
+	@Override
+	public double getMana() {
+		return mana;
+	}
 
-    @Override
-    public void setXp(double xp) {
-        this.xp=xp;
-    }
+	@Override
+	public void setMana(double mana) {
+		this.mana=mana;
+	}
 
-    @Override
-    public double getLvl() {
-        return lvl;
-    }
+	@Override
+	public double getXp() {
+		return xp;
+	}
 
-    @Override
-    public void setLvl(double lvl) {
-        this.lvl=lvl;
-    }
+	@Override
+	public void setXp(double xp) {
+		this.xp=xp;
+	}
 
-    @Override
-    public double getDefense() {
-        return defense;
-    }
+	@Override
+	public double getLvl() {
+		return lvl;
+	}
 
-    @Override
-    public void setDefense(double defense) {
-        this.defense=defense;
-    }
+	@Override
+	public void setLvl(double lvl) {
+		this.lvl=lvl;
+	}
 
-    @Override
-    public double getStr() {
-        return this.str;
-    }
+	@Override
+	public double getDefense() {
+		return defense;
+	}
 
-    @Override
-    public void setStr(double str) {
-        this.str=str;
-    }
+	@Override
+	public void setDefense(double defense) {
+		this.defense=defense;
+	}
 
-    @Override
-    public double getIntl() {
-        return intl;
-    }
+	@Override
+	public double getStr() {
+		return this.str;
+	}
 
-    @Override
-    public void setIntl(double intl) {
-        this.intl=intl;
-    }
-    
-    @Override
+	@Override
+	public void setStr(double str) {
+		this.str=str;
+	}
+
+	@Override
+	public double getIntl() {
+		return intl;
+	}
+
+	@Override
+	public void setIntl(double intl) {
+		this.intl=intl;
+	}
+
+	@Override
 	public double getMr() {
 		return mr;
 	}
-	
+
 	@Override
 	public void setMr(double mr) {
 		this.mr = mr;	
 	}
 
-    @Override
-    public double getCons() {
-        return cons;
-    }
+	@Override
+	public double getCons() {
+		return cons;
+	}
 
-    @Override
-    public void setCons(double cons) {
-        this.cons=cons;
-    }
+	@Override
+	public void setCons(double cons) {
+		this.cons=cons;
+	}
 
-    @Override
-    public double getAcc() {
-        return this.acc;
-    }
+	@Override
+	public double getAcc() {
+		return this.acc;
+	}
 
-    @Override
-    public void setAcc(double acc) {
-        this.acc=acc;
-    }
+	@Override
+	public void setAcc(double acc) {
+		this.acc=acc;
+	}
 
-    @Override
-    public double getEvs() {
-        return evs;
-    }
+	@Override
+	public double getEvs() {
+		return evs;
+	}
 
-    @Override
-    public void setEvs(double evs) {
-        this.evs=evs;
-    }
+	@Override
+	public void setEvs(double evs) {
+		this.evs=evs;
+	}
 
-    @Override
-    public double getInitiative() {
-        return initiative;
-    }
+	@Override
+	public double getInitiative() {
+		return initiative;
+	}
 
-    @Override
-    public void setInitiative(double initiative) {
-        this.initiative=initiative;
-    }
+	@Override
+	public void setInitiative(double initiative) {
+		this.initiative=initiative;
+	}
 
-    @Override
-    public String getclass() {
-        return Class;
-    }
+	@Override
+	public String getclass() {
+		return Class;
+	}
 
-    @Override
-    public void setClass(String aClass) {
-        this.Class=aClass;
-    }
+	@Override
+	public void setClass(String aClass) {
+		this.Class=aClass;
+	}
 
-    @Override
-    public String getSkill() {
-        return this.skill;
-    }
+	@Override
+	public String getSkill() {
+		return this.skill;
+	}
 
-    @Override
-    public void setSkill(String skill) {
-        this.skill=skill;
-    }
+	@Override
+	public void setSkill(String skill) {
+		this.skill=skill;
+	}
 
-    @Override
-    public String[] getBuffs() {
-        return buffs;
-    }
+	@Override
+	public String[] getBuffs() {
+		return buffs;
+	}
 
-    @Override
-    public void setBuffs(String[] buffs) {
-        this.buffs=buffs;
-    }
+	@Override
+	public void setBuffs(String[] buffs) {
+		this.buffs=buffs;
+	}
 
-    @Override
-    public String[] getDebuffs() {
-        return debuffs;
-    }
+	@Override
+	public String[] getDebuffs() {
+		return debuffs;
+	}
 
-    @Override
-    public void setDebuffs(String[] debuffs) {
-        this.debuffs=debuffs;
-    }
-    
-    public boolean isDead() {
-    	return isDead;
-    }
-    
-    public void kill() {
-    	isDead = true;
-    }
-    
-    public void lvlAdjust() {
-    	if(lvl > 1) {
-	    	health += 5 + 7*(lvl-1);
+	@Override
+	public void setDebuffs(String[] debuffs) {
+		this.debuffs=debuffs;
+	}
+
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void kill() {
+		isDead = true;
+	}
+
+	public void lvlAdjust() {
+		if(lvl > 1) {
+			health += 5 + 7*(lvl-1);
 			maxHealth = health;
 			mana += 5 + 5*(lvl-1);
 			if(mana > 100)
@@ -444,8 +557,8 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 			if(lvl%4 ==0)
 				evs += (lvl -lvl%4)/4;
 			xp += 20 *(lvl);
-    	}
-    }
+		}
+	}
 
 
 

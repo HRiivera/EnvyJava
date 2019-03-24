@@ -3,6 +3,7 @@ package Game.World.InWorldAreas;
 import Main.GameSetUp;
 import Main.Handler;
 import Resources.Images;
+import Resources.Animation;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -11,7 +12,9 @@ import Game.Entities.Dynamics.TownEntity;
 import Game.World.Walls;
 
 public class TownArea extends BaseArea {
-
+	
+	private Animation mapAnim;
+	
     Rectangle exit;
     Rectangle playerRect;
     public static boolean isInTown = false;
@@ -38,7 +41,7 @@ public class TownArea extends BaseArea {
         this.entityManager.AddEntity(new TownEntity(handler,2160,2480,Images.TownEntity));
 
         
-
+        mapAnim = new Animation(300, Images.Town);
         
         
         townWalls = new ArrayList<>();
@@ -48,7 +51,9 @@ public class TownArea extends BaseArea {
 
     public void tick() {
         super.tick();
-
+        
+        mapAnim.tick();
+        
         for (Walls w : townWalls) {
             w.tick();
         }
@@ -68,7 +73,7 @@ public class TownArea extends BaseArea {
         g2.setColor(Color.green);
         g2.fill(background);
 
-        g.drawImage(Images.ScaledTown, handler.getXInWorldDisplacement(), handler.getYInWorldDisplacement(), null);
+        g.drawImage(mapAnim.getCurrentFrame(), handler.getXInWorldDisplacement(), handler.getYInWorldDisplacement(), null);
 
         if (GameSetUp.DEBUGMODE) {
             for (Walls w : townWalls) {
@@ -111,7 +116,7 @@ public class TownArea extends BaseArea {
         townWalls.add(new InWorldWalls(handler, 2640, 1560, 400, 400, "Wall"));
         townWalls.add(new InWorldWalls(handler, 1840, 2200, 560, 400, "Wall"));
         
-        townWalls.add(new InWorldWalls(handler, 2400, 675, 160, 10, "Door S"));
+        townWalls.add(new InWorldWalls(handler, 2400, 675, 160, 10, "Door Exit"));
         
         
         

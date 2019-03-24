@@ -8,6 +8,7 @@ import Resources.Images;
 import Resources.MusicHandler;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
@@ -36,6 +37,8 @@ public class GameSetUp implements Runnable {
     //Input
     private KeyManager keyManager;
     private MouseManager mouseManager;
+    
+    private Boolean pressed = false;
 
     //Handler
     private Handler handler;
@@ -152,7 +155,11 @@ public class GameSetUp implements Runnable {
     
 	public void ToggleDebug() {
 		if(handler.getKeyManager().debug) {
+		pressed = true;
+		}
+		else if(handler.getKeyManager().debug == false && pressed) {
 			DEBUGMODE = !DEBUGMODE;
+			pressed = false;
 		}
 		
 	}

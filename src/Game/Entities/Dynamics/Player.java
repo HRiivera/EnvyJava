@@ -22,6 +22,16 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 	private Rectangle player;
 	private boolean canMove;
+	
+	private boolean canMoveUp = true;
+	private boolean canMoveDown = true;
+	private boolean canMoveLeft = true;
+	private boolean canMoveRight = true;
+	
+	
+	
+	
+	
 	private String secondFacing = "None";
 	public static boolean checkInWorld;
 
@@ -75,6 +85,12 @@ public class Player extends BaseDynamicEntity implements Fighter {
 			UpdateNextMove();
 			PlayerInput();
 			
+			
+				canMoveUp = true;
+				canMoveDown = true;
+				canMoveRight = true;
+				canMoveLeft = true;
+
 			if (GameSetUp.SWITCHING) {
 				switchingCoolDown++;
 			}
@@ -98,7 +114,28 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 	
 	
+	public void checkCanMove(Walls w) {
+		if(nextArea.intersects(w.getUpWall())) {
+			canMoveDown = false;
+		}
+		if(nextArea.intersects(w.getDownWall())) {
+			canMoveUp = false;
+		}
+		if(nextArea.intersects(w.getLeftWall())) {
+			canMoveRight = false;
+		}
+		if(nextArea.intersects(w.getRightWall())) {
+			canMoveLeft = false;
+		}
+		
+	}
 	
+	public boolean checkSidesIntersect(Walls w) {
+		if(nextArea.intersects(w.getUpWall()) || nextArea.intersects(w.getDownWall()) || nextArea.intersects(w.getLeftWall()) || nextArea.intersects(w.getRightWall())) {
+		return true;
+		}
+		else return false;
+	}
 	
 
 	@Override
@@ -145,8 +182,9 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 	private void PlayerInput() {
 
-		canMove = true;
 
+			
+		
 		if (handler.getKeyManager().runbutt) {
 			speed = 2;
 		} else {
@@ -158,46 +196,78 @@ public class Player extends BaseDynamicEntity implements Fighter {
 		}
 
 		CheckForWalls();
-		if(handler.getKeyManager().up && handler.getKeyManager().left & canMove){
+		if(handler.getKeyManager().up && handler.getKeyManager().left & canMoveUp && canMoveLeft){
 			Move(true, speed*3/4);
 			Move(false, speed*3/4);
 			facing = "Left";
 			secondFacing = "UpLeft";
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveRight = true;
+			canMoveLeft = true;
 		}
-		else if(handler.getKeyManager().up && handler.getKeyManager().right & canMove){
+		else if(handler.getKeyManager().up && handler.getKeyManager().right & canMoveUp && canMoveRight){
 			Move(true, -speed*3/4);
 			Move(false, speed*3/4);
 			facing = "Right";
 			secondFacing = "UpRight";
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveRight = true;
+			canMoveLeft = true;
 		}
-		else if(handler.getKeyManager().down && handler.getKeyManager().left & canMove){
+		else if(handler.getKeyManager().down && handler.getKeyManager().left & canMoveDown && canMoveLeft){
 			Move(true, speed*3/4);
 			Move(false, -speed*3/4);
 			facing = "Left";
 			secondFacing = "DownLeft";
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveRight = true;
+			canMoveLeft = true;
 		}
-		else if(handler.getKeyManager().down && handler.getKeyManager().right & canMove){
+		else if(handler.getKeyManager().down && handler.getKeyManager().right & canMoveDown && canMoveRight){
 			Move(true, -speed*3/4);
 			Move(false, -speed*3/4);
 			facing = "Right";
 			secondFacing = "DownRight";
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveRight = true;
+			canMoveLeft = true;
 		}
-		else if (handler.getKeyManager().down & canMove) {
+		else if (handler.getKeyManager().down & canMoveDown) {
 			Move(false, -speed);
 			facing = "Down";
 			secondFacing = "None";
-		} else if (handler.getKeyManager().up & canMove) {
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveRight = true;
+			canMoveLeft = true;
+		} else if (handler.getKeyManager().up & canMoveUp) {
 			Move(false, speed);
 			facing = "Up";
 			secondFacing = "None";
-		} else if (handler.getKeyManager().right & canMove) {
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveRight = true;
+			canMoveLeft = true;
+		} else if (handler.getKeyManager().right & canMoveRight) {
 			Move(true, -speed);
 			facing = "Right";
 			secondFacing = "None";
-		} else if (handler.getKeyManager().left & canMove) {
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveRight = true;
+			canMoveLeft = true;
+		} else if (handler.getKeyManager().left & canMoveLeft) {
 			Move(true, speed);
 			facing = "Left";
 			secondFacing = "None";
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveRight = true;
+			canMoveLeft = true;
 		} 
 		else {
 			isMoving = false;
@@ -252,10 +322,10 @@ public class Player extends BaseDynamicEntity implements Fighter {
 		if (!checkInWorld) {
 			for (Walls w : handler.getWorldManager().getWalls()) {
 
-				if (nextArea.intersects(w)) {
+				if (checkSidesIntersect(w)) {
 
 					if (w.getType().equals("Wall")) {
-						PushPlayerBack();
+						checkCanMove(w);
 					}
 
 					else if (w.getType().startsWith("Door")) {
@@ -301,9 +371,9 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							GameSetUp.LOADING = true;
 							handler.setArea("Town");
 					
-							//handler.getGame().getMusicHandler().set_changeMusic("res/music/Cave.mp3");
-							//handler.getGame().getMusicHandler().play();
-							//handler.getGame().getMusicHandler().setVolume(0.4);
+							handler.getGame().getMusicHandler().set_changeMusic("res/music/Littleroot Town Song.mp3");
+							handler.getGame().getMusicHandler().play();
+							handler.getGame().getMusicHandler().setVolume(0.15);
 
 							State.setState(handler.getGame().inWorldState.setArea(InWorldState.townArea));
 							
@@ -321,9 +391,9 @@ public class Player extends BaseDynamicEntity implements Fighter {
 		{
 			if (CaveArea.isInCave) {
 				for (InWorldWalls iw : CaveArea.caveWalls) {
-					if (nextArea.intersects(iw)) {
+					if (checkSidesIntersect(iw)) {
 						if (iw.getType().equals("Wall"))
-							PushPlayerBack();
+							checkCanMove(iw);
 						else {
 
 							if (iw.getType().equals("Start Exit")) {
@@ -360,9 +430,9 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 				for (InWorldWalls iw : InWorldState.SArea.getWalls()) {
 
-					if (nextArea.intersects(iw)) {
+					if (checkSidesIntersect(iw)) {
 						if (iw.getType().equals("Wall"))
-							PushPlayerBack();
+							checkCanMove(iw);
 
 					}
 				}
@@ -372,10 +442,10 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 				for (InWorldWalls iw : TownArea.townWalls) {
 
-					if (nextArea.intersects(iw)) {
+					if (checkSidesIntersect(iw)) {
 						if (iw.getType().equals("Wall"))
-							PushPlayerBack();
-						else if(iw.getType().equals("Door S")){
+							checkCanMove(iw);
+						else if(iw.getType().equals("Door Exit")){
 							
 							handler.setXDisplacement(-200);
 							handler.setYDisplacement(150);
