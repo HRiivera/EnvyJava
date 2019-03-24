@@ -85,11 +85,6 @@ public class Player extends BaseDynamicEntity implements Fighter {
 			UpdateNextMove();
 			PlayerInput();
 			
-			
-				canMoveUp = true;
-				canMoveDown = true;
-				canMoveRight = true;
-				canMoveLeft = true;
 
 			if (GameSetUp.SWITCHING) {
 				switchingCoolDown++;
@@ -442,7 +437,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 				for (InWorldWalls iw : TownArea.townWalls) {
 
-					if (checkSidesIntersect(iw)) {
+					if (nextArea.intersects(iw)) {
 						if (iw.getType().equals("Wall"))
 							checkCanMove(iw);
 						else if(iw.getType().equals("Door Exit")){

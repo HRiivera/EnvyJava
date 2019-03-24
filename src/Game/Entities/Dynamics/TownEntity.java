@@ -23,6 +23,8 @@ public class TownEntity extends BaseStaticEntity {
 	private int originalX;
 	private int originalY;
 	public Boolean text=false;
+	
+	private Boolean pressed = false;
 
 
 	public TownEntity(Handler handler, int xPosition, int yPosition, BufferedImage townEntity) {
@@ -78,16 +80,31 @@ public class TownEntity extends BaseStaticEntity {
 
 		ir.x = handler.getXInWorldDisplacement() + originalX+25;
 		ir.y = handler.getYInWorldDisplacement() + originalY+200;
-		if(handler.getKeyManager().attbut) {
+		if(releasedE()) {
 			text=!text;
 		}
 
 	}
+	
+	public Boolean releasedE() {
+		if(handler.getKeyManager().attbut) {
+			pressed = true;
+			}
+			else if(handler.getKeyManager().attbut == false && pressed) {
+				pressed = false;
+				System.out.println("Pressed");
+				return true;
+			}
+		return false;
+			
+		}
+	
 
 	@Override
 	public Rectangle getCollision() {
 		return collision;
 	}
+	
 
 	@Override
 	public double getXOffset() {
@@ -98,16 +115,15 @@ public class TownEntity extends BaseStaticEntity {
 
 		if(ir.intersects(handler.getEntityManager().getPlayer().getCollision())&& !EP){
 
-			g.drawImage(Images.E,(int) xPosition-140,(int) yPosition-440,32,32,null);
 
-			if(handler.getKeyManager().attbut) {
+			if(releasedE()) {
 
 				handler.getEntityManager().getPlayer().AcceptQuest=true;
 			}
 
 
 
-			g.drawImage(Images.E,(int) ir.x+10,(int) ir.y-50,32,32,null);
+			g.drawImage(Images.E,(int) ir.x+10,(int) ir.y-230,32,32,null);
 
 
 

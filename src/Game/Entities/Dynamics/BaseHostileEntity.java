@@ -116,25 +116,25 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 				frame =  front[0];
 				break;
 			case "Up":
-				frame =  back[0];
+				frame =  back[4];
 				break;
 			case "Right":
-				frame = right[0];
+				frame = right[6];
 				break;
 			case "Left":
-				frame = left[0];
+				frame = left[2];
 				break;
 			case "UpRight":
-				frame = UpRight[0];
+				frame = UpRight[5];
 				break;
 			case "UpLeft":
-				frame = UpLeft[0];
+				frame = UpLeft[3];
 				break;
 			case "DownLeft":
-				frame = DownLeft[0];
+				frame = DownLeft[1];
 				break;
 			case "DownRight":
-				frame = DownRight[0];
+				frame = DownRight[7];
 			}
 		}
 		return frame;

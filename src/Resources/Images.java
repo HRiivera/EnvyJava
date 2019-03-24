@@ -158,7 +158,7 @@ public class Images {
 		pika_frontleft = new BufferedImage[2];
 		pika_backleft = new BufferedImage[2];
 		pika_backright = new BufferedImage[2];
-		
+		pika_idle = new BufferedImage[8];
 		
 		
 		
@@ -333,7 +333,14 @@ public class Images {
 			pika_frontright[0] = pikaSheet.crop(540, 74, 22 ,26);
 			pika_frontright[1] = pikaSheet.crop(563, 74, 22 ,26);
 			
-			
+			pika_idle[0] = pikaSheet.crop(3, 0, 20, 26);			//front
+			pika_idle[1] = pikaSheet.crop(71, 0, 22, 26);			//frontleft
+			pika_idle[2] = pikaSheet.crop(142, 0, 22, 26);			//left
+			pika_idle[3] = pikaSheet.crop(213, 0, 25, 26);			//backleft
+			pika_idle[4] = pikaSheet.crop(291, 0, 22, 26);			//back
+			pika_idle[5] = pikaSheet.crop(442, 74, 22, 26);			//backright
+			pika_idle[6] = pikaSheet.crop(516, 74, 22, 26);			//right
+			pika_idle[7] = pikaSheet.crop(587, 74, 22, 26);			//frontright
 			
 			
 			

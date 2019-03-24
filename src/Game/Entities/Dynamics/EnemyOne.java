@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import Game.GameStates.FightState;
 import Game.GameStates.State;
+import Game.World.InWorldAreas.CaveArea;
 import Main.Handler;
 import Resources.Animation;
 import Resources.Images;
@@ -21,8 +22,8 @@ public class EnemyOne extends BaseHostileEntity implements Fighter{
 
     public EnemyOne(Handler handler, int xPosition, int yPosition, String state, String name, String area, BufferedImage[] animFrames) {
         super(handler, yPosition, yPosition,state,name,area,animFrames);
-        width = 30;
-        height = 30;
+        width = 22*3;
+        height = 26*3;
         speed = 1;
         type="EnemyOne";
         this.setXOffset(xPosition);
@@ -57,14 +58,28 @@ public class EnemyOne extends BaseHostileEntity implements Fighter{
 		animDownRight.tick();
     	
         if(!Player.isinArea)super.tick();
-        animDown.tick();
-		animUp.tick();
-		animRight.tick();
-		animLeft.tick();
-		animUpRight.tick();
-		animUpLeft.tick();
-		animDownLeft.tick();
-		animDownRight.tick();
+        
+        if(CaveArea.isInCave) {
+		if(this.facing == "Up") {width = 22*3;}
+		if(this.facing == "Down") {width = 20*3;}
+		if(this.facing == "Left") {width = 22*3;}
+		if(this.facing == "Right") {width = 22*3;}
+		if(this.facing == "UpRight") {width = 25*3;}
+		if(this.facing == "UpLeft") {width = 25*3;}
+		if(this.facing == "DownLeft") {width = 22*3;}
+		if(this.facing == "DownRight") {width = 22*3;}
+        }
+        else {
+        	height = 26*2;
+    		if(this.facing == "Up") {width = 22*2;}
+    		if(this.facing == "Down") {width = 20*2;}
+    		if(this.facing == "Left") {width = 22*2;}
+    		if(this.facing == "Right") {width = 22*2;}
+    		if(this.facing == "UpRight") {width = 25*2;}
+    		if(this.facing == "UpLeft") {width = 25*2;}
+    		if(this.facing == "DownLeft") {width = 22*2;}
+    		if(this.facing == "DownRight") {width = 22*2;}
+        }
     }
 
     @Override
@@ -77,19 +92,19 @@ public class EnemyOne extends BaseHostileEntity implements Fighter{
         if(handler.getArea().equals(this.Area)) {
             if (!Player.checkInWorld) {
                 enemyOne = new Rectangle((int) (handler.getXDisplacement() + getXOffset()),
-                        (int) (handler.getYDisplacement() + getYOffset()), 45, 45);
+                        (int) (handler.getYDisplacement() + getYOffset()), width, height);
 
             } else {
                 enemyOne = new Rectangle((int) (handler.getXInWorldDisplacement() + getXOffset()),
-                        (int) (handler.getYInWorldDisplacement() + getYOffset()), 70, 70);
+                        (int) (handler.getYInWorldDisplacement() + getYOffset()), width, height);
 
             }
 
             g2.setColor(Color.black);
 
-            g2.drawImage(getCurrentAnimationFrameExtended(animDown, animUp, animLeft, animRight, Images.pika_front, Images.pika_back,
-						Images.pika_left, Images.pika_right, animUpRight, animUpLeft, animDownLeft, animDownRight, Images.pika_backright,
-						 Images.pika_backleft, Images.pika_frontleft, Images.pika_frontright),enemyOne.x,enemyOne.y,enemyOne.width,enemyOne.height,null);
+            g2.drawImage(getCurrentAnimationFrameExtended(animDown, animUp, animLeft, animRight, Images.pika_idle, Images.pika_idle,
+						Images.pika_idle, Images.pika_idle, animUpRight, animUpLeft, animDownLeft, animDownRight, Images.pika_idle,
+						 Images.pika_idle, Images.pika_idle, Images.pika_idle),enemyOne.x,enemyOne.y,enemyOne.width,enemyOne.height,null);
 
             if (enemyOne.intersects(handler.getEntityManager().getPlayer().getCollision())) {
                 handler.getEntityManager().getPlayer().facing = "Left";

@@ -19,5 +19,17 @@ public class InWorldWalls extends Walls {
 	public void tick() {
 		this.x = handler.getXInWorldDisplacement() + originalX;
 		this.y = handler.getYInWorldDisplacement() + originalY;
+		
+		upWall.x = originalX + handler.getXInWorldDisplacement();
+        upWall.y = originalY-5 + handler.getYInWorldDisplacement();
+        
+        downWall.x = originalX + handler.getXInWorldDisplacement();
+        downWall.y = originalY+height + handler.getYInWorldDisplacement();
+        
+        leftWall.x = originalX-5 + handler.getXInWorldDisplacement();
+        leftWall.y = originalY + handler.getYInWorldDisplacement();
+        
+        rightWall.x = originalX+width + handler.getXInWorldDisplacement();
+        rightWall.y = originalY + handler.getYInWorldDisplacement();
 	}
 }

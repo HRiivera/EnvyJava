@@ -56,6 +56,8 @@ public class TownArea extends BaseArea {
         
         for (Walls w : townWalls) {
             w.tick();
+            w.getUpWall();
+            
         }
         if(!GameSetUp.LOADING) {
             entityManager.tick();
@@ -84,6 +86,7 @@ public class TownArea extends BaseArea {
                     g2.setColor(Color.PINK);
 
                 w.render(g2);
+               g2.drawRect( w.getUpWall().x,  w.getUpWall().y,  w.getUpWall().width,  w.getUpWall().height);
             }
         }
 
