@@ -17,13 +17,11 @@ public class TownEntity extends BaseStaticEntity {
 
 	Rectangle collision;
 	int width, height;
-	public Boolean EP = false;
-	public Boolean HI = true;
 	private Rectangle ir = new Rectangle();
 	private int originalX;
 	private int originalY;
 	public Boolean text=false;
-	
+
 	private Boolean pressed = false;
 
 
@@ -60,16 +58,9 @@ public class TownEntity extends BaseStaticEntity {
 		if(TownArea.isInTown) {
 			g.drawRect(ir.x, ir.y, ir.width, ir.height);
 
-			if (HI) {
-				g.drawImage(Images.TownEntity, (int)(handler.getXInWorldDisplacement() + xPosition),(int)( handler.getYInWorldDisplacement() + yPosition), width, height, null);
-				collision = new Rectangle((int)(handler.getXInWorldDisplacement() + xPosition + 35), (int)(handler.getYInWorldDisplacement() + yPosition + 50), width/4, height/2);
 
-
-
-			} else {
-				g.drawImage(Images.TownEntity, (int)(handler.getXInWorldDisplacement() + xPosition),(int)( handler.getYInWorldDisplacement() + yPosition), width, height, null);
-			};
-
+			g.drawImage(Images.TownEntity, (int)(handler.getXInWorldDisplacement() + xPosition),(int)( handler.getYInWorldDisplacement() + yPosition), width, height, null);
+			collision = new Rectangle((int)(handler.getXInWorldDisplacement() + xPosition + 35), (int)(handler.getYInWorldDisplacement() + yPosition + 50), width/4, height/2);
 			checkForPlayer(g);
 		}
 	}
@@ -80,31 +71,36 @@ public class TownEntity extends BaseStaticEntity {
 
 		ir.x = handler.getXInWorldDisplacement() + originalX+25;
 		ir.y = handler.getYInWorldDisplacement() + originalY+200;
-		if(releasedE()) {
-			text=!text;
+		if(TownArea.isInTown) {
+			if(releasedE() && ir.intersects(handler.getEntityManager().getPlayer().getCollision())) {
+				text=!text;
+			}
+			else if(!ir.intersects(handler.getEntityManager().getPlayer().getCollision())) {
+				text=false;
+			}
 		}
 
 	}
-	
+
 	public Boolean releasedE() {
 		if(handler.getKeyManager().attbut) {
 			pressed = true;
-			}
-			else if(handler.getKeyManager().attbut == false && pressed) {
-				pressed = false;
-				System.out.println("Pressed");
-				return true;
-			}
-		return false;
-			
 		}
-	
+		else if(handler.getKeyManager().attbut == false && pressed) {
+			pressed = false;
+			System.out.println("Pressed");
+			return true;
+		}
+		return false;
+
+	}
+
 
 	@Override
 	public Rectangle getCollision() {
 		return collision;
 	}
-	
+
 
 	@Override
 	public double getXOffset() {
@@ -113,20 +109,9 @@ public class TownEntity extends BaseStaticEntity {
 	private void checkForPlayer(Graphics g) {
 
 
-		if(ir.intersects(handler.getEntityManager().getPlayer().getCollision())&& !EP){
-
-
-			if(releasedE()) {
-
-				handler.getEntityManager().getPlayer().AcceptQuest=true;
-			}
-
-
+		if(ir.intersects(handler.getEntityManager().getPlayer().getCollision())){
 
 			g.drawImage(Images.E,(int) ir.x+10,(int) ir.y-230,32,32,null);
-
-
-
 
 			if(text) {
 
@@ -135,18 +120,16 @@ public class TownEntity extends BaseStaticEntity {
 
 				if(handler.getEntityManager().getPlayer().getQuestComplete()) {
 					g.drawString("You've unclocked a new  Freeze skill! and a new cave area to explore!",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+425);
-
+					handler.getEntityManager().getPlayer().setQuestTurnedIn(true);
+					handler.getEntityManager().getPlayer().setSkill("Freeze");
+					System.out.println("Quest Turned In");			
 				}else {
 					g.drawString("Defeat an Enemy to unlock a skill ",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+400);
-
+					handler.getEntityManager().getPlayer().setAcceptQuest(true);
+					System.out.println("Accepted Quest");
 				}
 
 			}
-		}else if(ir.intersects(handler.getEntityManager().getPlayer().getCollision()) && EP){
-			HI = true;
-		}
-		if (!ir.intersects(handler.getEntityManager().getPlayer().getCollision())) {
-			HI=false;
 		}
 	}
 

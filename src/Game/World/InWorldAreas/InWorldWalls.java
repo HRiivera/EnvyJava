@@ -21,12 +21,12 @@ public class InWorldWalls extends Walls {
 		this.y = handler.getYInWorldDisplacement() + originalY;
 		
 		upWall.x = originalX + handler.getXInWorldDisplacement();
-        upWall.y = originalY-5 + handler.getYInWorldDisplacement();
+        upWall.y = originalY-20 + handler.getYInWorldDisplacement();
         
         downWall.x = originalX + handler.getXInWorldDisplacement();
         downWall.y = originalY+height + handler.getYInWorldDisplacement();
         
-        leftWall.x = originalX-5 + handler.getXInWorldDisplacement();
+        leftWall.x = originalX-20 + handler.getXInWorldDisplacement();
         leftWall.y = originalY + handler.getYInWorldDisplacement();
         
         rightWall.x = originalX+width + handler.getXInWorldDisplacement();

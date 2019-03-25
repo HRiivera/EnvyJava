@@ -28,7 +28,7 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 	public String name="enemy";
 	public String Area;//None for MapState
 	public String type;//class it is ex: "EnemyOne"
-	
+
 
 	public BaseHostileEntity(Handler handler, int xPosition, int yPosition, String state,String name,String area, BufferedImage[] animFrames) {
 		super(handler, xPosition, yPosition,animFrames);
@@ -55,7 +55,7 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 			if (canMove) {
 				count++;
 				if (count >= 100 + rand.nextInt(350)) {
-					
+
 					directionMov = rand.nextInt(9); // 0 (idle), 1(up), 2(down), 3(left), 4(right)
 					if(directionMov==0) {isMoving=false;}
 					else {isMoving=true;}
@@ -72,8 +72,8 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 			}
 			canMove = true;
 		}
-		
-		
+
+
 	}
 
 
@@ -272,31 +272,45 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 
 	protected void Chase() {
 
-
-
-
-
-
-
-
-
-
-
-		if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) > this.getXOffset() && canMove) {
+		if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) > this.getXOffset() && canMove
+				&& this.handler.getEntityManager().getPlayer().getYOffset()+(handler.getEntityManager().getPlayer().getCollision().height) < this.getYOffset()) {
+			facing = "UpRight";
+			this.setXOffset(this.getXOffset() + chaseSpeed);
+			this.setYOffset(this.getYOffset() - chaseSpeed);
+		}
+		else if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) < this.getXOffset() && canMove
+				&& this.handler.getEntityManager().getPlayer().getYOffset()+(handler.getEntityManager().getPlayer().getCollision().height) < this.getYOffset()) {
+			facing = "UpLeft";
+			this.setXOffset(this.getXOffset() - chaseSpeed);
+			this.setYOffset(this.getYOffset() - chaseSpeed);
+		}
+		else if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) > this.getXOffset() && canMove
+				&& this.handler.getEntityManager().getPlayer().getYOffset()+(handler.getEntityManager().getPlayer().getCollision().height) > this.getYOffset()) {
+			facing = "DownRight";
+			this.setXOffset(this.getXOffset() + chaseSpeed);
+			this.setYOffset(this.getYOffset() + chaseSpeed);
+		}
+		else if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) < this.getXOffset() && canMove
+				&& this.handler.getEntityManager().getPlayer().getYOffset()+(handler.getEntityManager().getPlayer().getCollision().height) > this.getYOffset()) {
+			facing = "DownLeft";
+			this.setXOffset(this.getXOffset() - chaseSpeed);
+			this.setYOffset(this.getYOffset() + chaseSpeed);
+		}
+		else if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) > this.getXOffset() && canMove) {
 			facing = "Right";
 			this.setXOffset(this.getXOffset() + chaseSpeed);
 		}
-		if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) < this.getXOffset() && canMove) {
+		else if (this.handler.getEntityManager().getPlayer().getXOffset()+(handler.getEntityManager().getPlayer().getCollision().width/2) < this.getXOffset() && canMove) {
 			facing = "Left";
 			this.setXOffset(this.getXOffset() - chaseSpeed);
 		}
 
-		if (this.handler.getEntityManager().getPlayer().getYOffset()+(handler.getEntityManager().getPlayer().getCollision().height) < this.getYOffset() && canMove) {
+		else if (this.handler.getEntityManager().getPlayer().getYOffset()+(handler.getEntityManager().getPlayer().getCollision().height) < this.getYOffset() && canMove) {
 			facing = "Up";
 			this.setYOffset(this.getYOffset() - chaseSpeed);
 		}
 
-		if (this.handler.getEntityManager().getPlayer().getYOffset()+(handler.getEntityManager().getPlayer().getCollision().height) > this.getYOffset() && canMove) {
+		else if (this.handler.getEntityManager().getPlayer().getYOffset()+(handler.getEntityManager().getPlayer().getCollision().height) > this.getYOffset() && canMove) {
 			facing = "Down";
 			this.setYOffset(this.getYOffset() + chaseSpeed);
 		}

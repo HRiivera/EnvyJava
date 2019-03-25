@@ -46,6 +46,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 	private int switchingCoolDown = 0;
 	boolean AcceptQuest=false;
 	boolean QuestComplete=false;
+	boolean QuestTurnedIn = false;
 
 	// Animations
 	private Animation animDown, animUp, animLeft, animRight;
@@ -76,7 +77,6 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 		if (!GameSetUp.LOADING) {
 			levelUP();
-
 			animDown.tick();
 			animUp.tick();
 			animRight.tick();
@@ -110,23 +110,23 @@ public class Player extends BaseDynamicEntity implements Fighter {
 	
 	
 	public void checkCanMove(Walls w) {
-		if(nextArea.intersects(w.getUpWall())) {
+		if(player.intersects(w.getUpWall())) {
 			canMoveDown = false;
 		}
-		if(nextArea.intersects(w.getDownWall())) {
+		if(player.intersects(w.getDownWall())) {
 			canMoveUp = false;
 		}
-		if(nextArea.intersects(w.getLeftWall())) {
+		if(player.intersects(w.getLeftWall())) {
 			canMoveRight = false;
 		}
-		if(nextArea.intersects(w.getRightWall())) {
+		if(player.intersects(w.getRightWall())) {
 			canMoveLeft = false;
 		}
 		
 	}
 	
 	public boolean checkSidesIntersect(Walls w) {
-		if(nextArea.intersects(w.getUpWall()) || nextArea.intersects(w.getDownWall()) || nextArea.intersects(w.getLeftWall()) || nextArea.intersects(w.getRightWall())) {
+		if(player.intersects(w.getUpWall()) || player.intersects(w.getDownWall()) || player.intersects(w.getLeftWall()) || player.intersects(w.getRightWall())) {
 		return true;
 		}
 		else return false;
@@ -322,6 +322,11 @@ public class Player extends BaseDynamicEntity implements Fighter {
 					if (w.getType().equals("Wall")) {
 						checkCanMove(w);
 					}
+					else if (w.getType().equals("Block")) {
+						if(!this.getQuestTurnedIn()) {
+							checkCanMove(w);
+						}
+					}
 
 					else if (w.getType().startsWith("Door")) {
 						canMove = true;
@@ -453,7 +458,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							handler.getGame().getMusicHandler().setVolume(0.2);
 
 							State.setState(handler.getGame().mapState);
-							CaveArea.isInCave = false;
+							TownArea.isInTown = false;
 							checkInWorld = false;
 							System.out.println("Left Town");
 							setWidthAndHeight(InMapWidthFrontAndBack, InMapHeightFront);
@@ -764,7 +769,9 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 		return this.AcceptQuest;
 
-	}public void setQuestComplete(boolean arg) {
+	}
+	
+	public void setQuestComplete(boolean arg) {
 		this.QuestComplete = arg;
 	}
 
@@ -773,7 +780,16 @@ public class Player extends BaseDynamicEntity implements Fighter {
 		return this.QuestComplete;
 
 	}
+	
+	public void setQuestTurnedIn(boolean arg) {
+		this.QuestTurnedIn = arg;
+	}
 
+	public boolean getQuestTurnedIn() {
+
+		return this.QuestTurnedIn;
+
+	}
 
 	
 

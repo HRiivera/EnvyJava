@@ -56,11 +56,11 @@ public class WorldManager {
 
 		for (Walls w: this.worldWalls) {
 			w.tick();
+			
 		}
 		this.animation.tick();
 		this.collidedWithWall();
 		this.moveString();
-		
 
 	}
 
@@ -151,7 +151,7 @@ public class WorldManager {
 		
 		
 		//Rock
-		//worldWalls.add(new Walls(handler,1640,75,100,100, "Wall"));
+		worldWalls.add(new Walls(handler,1640,75,100,100, "Block"));
 		
 		
 		

@@ -8,7 +8,9 @@ import Resources.Images;
 public class Rock extends BaseStaticEntity {
 	
 	Rectangle collision;
+	Rectangle playerDetection;
 	int width, height;
+	Boolean disappeared = false;
 	
 	public Rock(Handler handler, int xPosition, int yPosition) {
 		super(handler, xPosition, yPosition);
@@ -20,13 +22,24 @@ public class Rock extends BaseStaticEntity {
 
 		
 		collision = new Rectangle();
+		playerDetection = new Rectangle();
+	}
+	
+	
+	@Override
+	public void tick(){
+		playerDetection = new Rectangle((int)(handler.getXDisplacement() + xPosition-50),(int)(handler.getYDisplacement() + yPosition-50), width+100,height+100);
 	}
 	
 	
 	@Override
 	public void render(Graphics g) {
+		if(playerDetection.intersects(handler.getEntityManager().getPlayer().getCollision()) && handler.getEntityManager().getPlayer().getQuestTurnedIn()) {
+			disappeared = true;
+		}
+		else if(!disappeared){
 		g.drawImage(Images.cobblestone, (int)(handler.getXDisplacement() + xPosition),(int)( handler.getYDisplacement() + yPosition), width, height, null);
-		collision = new Rectangle((int)(handler.getXDisplacement() + xPosition + 35), (int)(handler.getYDisplacement() + yPosition + 50), width/4, height/2);
+		}
 	}
 	
 	@Override
@@ -34,10 +47,7 @@ public class Rock extends BaseStaticEntity {
 		return collision;
 	}
 	
-	@Override
-	public double getXOffset() {
-		return xPosition;
-	}
+
 	
 	
 }

@@ -29,9 +29,9 @@ public class Walls extends Rectangle {
         this.handler = handler;
         this.wallType = wallType;
         
-        upWall = new Rectangle(this.x,this.y-5,width,10);
+        upWall = new Rectangle(this.x,this.y-10,width,10);
         downWall = new Rectangle(this.x,this.y+height,width,10);
-        leftWall = new Rectangle(this.x-5,this.y,10,height);
+        leftWall = new Rectangle(this.x-10,this.y,10,height);
         rightWall = new Rectangle(this.x+width,this.y,10,height);
         
 
@@ -42,12 +42,12 @@ public class Walls extends Rectangle {
         this.y = handler.getYDisplacement() + originalY;
         
         upWall.x = originalX + handler.getXDisplacement();
-        upWall.y = originalY-5 + handler.getYDisplacement();
+        upWall.y = originalY-10 + handler.getYDisplacement();
         
         downWall.x = originalX + handler.getXDisplacement();
         downWall.y = originalY+height + handler.getYDisplacement();
         
-        leftWall.x = originalX-5 + handler.getXDisplacement();
+        leftWall.x = originalX-10 + handler.getXDisplacement();
         leftWall.y = originalY + handler.getYDisplacement();
         
         rightWall.x = originalX+width + handler.getXDisplacement();

@@ -139,7 +139,6 @@ public class FightState extends InWorldState{
             	
             	if(handler.getEntityManager().getPlayer().getAcceptQuest()) {
             		handler.getEntityManager().getPlayer().setQuestComplete(true);
-            		handler.getEntityManager().getPlayer().setSkill("Freeze");
             	}
                 battleOver=true;
                 
@@ -523,7 +522,7 @@ public class FightState extends InWorldState{
         uiManager.addObjects(new UIImageButton(handler.getWidth() * 38/60 - 128/2, 5*handler.getHeight()/6, 128, 64, Images.Skill, new ClickListlener() {
             @Override
             public void onClick() {
-                if(handler.getEntityManager().getPlayer().getMana()>=25 && handler.getEntityManager().getPlayer().getQuestComplete()) {
+                if(handler.getEntityManager().getPlayer().getMana()>=25 && handler.getEntityManager().getPlayer().getQuestTurnedIn()) {
                     System.out.println("Skill");
                     skill = true;
                 }

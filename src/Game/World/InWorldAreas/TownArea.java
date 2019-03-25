@@ -62,7 +62,7 @@ public class TownArea extends BaseArea {
         if(!GameSetUp.LOADING) {
             entityManager.tick();
         }
-
+        
     }
 
     @Override
@@ -87,6 +87,9 @@ public class TownArea extends BaseArea {
 
                 w.render(g2);
                g2.drawRect( w.getUpWall().x,  w.getUpWall().y,  w.getUpWall().width,  w.getUpWall().height);
+               g2.drawRect( w.getDownWall().x,  w.getDownWall().y,  w.getDownWall().width,  w.getDownWall().height);
+               g2.drawRect( w.getLeftWall().x,  w.getLeftWall().y,  w.getLeftWall().width,  w.getLeftWall().height);
+               g2.drawRect( w.getRightWall().x,  w.getRightWall().y,  w.getRightWall().width,  w.getRightWall().height);
             }
         }
 
@@ -103,10 +106,10 @@ public class TownArea extends BaseArea {
         townWalls.add(new InWorldWalls(handler, 1760, 0, 640, 1400, "Wall"));									//Left Upper Row
         townWalls.add(new InWorldWalls(handler, 2560, 0, 480, 1400, "Wall"));									//Right Upper Row
         townWalls.add(new InWorldWalls(handler, 3040, 1400, 160, 160, "Wall"));									//Right Upper Tree
-        townWalls.add(new InWorldWalls(handler, 3200, 0, 10, imageHeight, "Wall"));								//Right Border
+        townWalls.add(new InWorldWalls(handler, 3200, 0, 100, imageHeight, "Wall"));								//Right Border
         townWalls.add(new InWorldWalls(handler, 3040, 2520, 160, 160, "Wall"));									//Right Lower Tree 1
         townWalls.add(new InWorldWalls(handler, 2880, 2680, 160, 160, "Wall"));									//Right Lower Tree 2
-        townWalls.add(new InWorldWalls(handler, 0, 2840, imageWidth, 10, "Wall"));								//Lower Border
+        townWalls.add(new InWorldWalls(handler, 0, 2840, imageWidth, 100, "Wall"));								//Lower Border
         townWalls.add(new InWorldWalls(handler, 1600, 2680, 160, 160, "Wall"));	
         
         townWalls.add(new InWorldWalls(handler, 2800, 2280, 80, 80, "Wall"));									//Lower Right Sign
