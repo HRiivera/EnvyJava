@@ -3,7 +3,12 @@ package Game.GameStates;
 import Game.Entities.EntityManager;
 import Game.World.InWorldAreas.BaseArea;
 import Game.World.InWorldAreas.CaveArea;
+import Game.World.InWorldAreas.LabArea;
 import Game.World.InWorldAreas.TownArea;
+import Game.World.InWorldAreas.Room1Area;
+import Game.World.InWorldAreas.Room2Area;
+import Game.World.InWorldAreas.Room3Area;
+import Game.World.InWorldAreas.Room4Area;
 import Main.GameSetUp;
 import Main.Handler;
 import java.awt.*;
@@ -19,6 +24,11 @@ public class InWorldState extends State{
     public static BaseArea caveArea;
     public static BaseArea townArea;
     public static BaseArea SArea;
+    public static BaseArea labArea;
+    public static BaseArea room1Area;
+    public static BaseArea room2Area;
+    public static BaseArea room3Area;
+    public static BaseArea room4Area;
 
     public InWorldState(Handler handler) {
         super(handler);
@@ -26,6 +36,11 @@ public class InWorldState extends State{
 
         caveArea = new CaveArea(handler, entityManager);
         townArea = new TownArea(handler, entityManager);
+        labArea = new LabArea(handler, entityManager);
+        room1Area = new Room1Area(handler, entityManager);
+        room2Area = new Room2Area(handler, entityManager);
+        room3Area = new Room3Area(handler, entityManager);
+        room4Area = new Room4Area(handler, entityManager);
         SArea = this.handler.getKeyManager().new Area(handler, entityManager);
 
     }

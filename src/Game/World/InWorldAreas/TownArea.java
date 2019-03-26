@@ -38,7 +38,7 @@ public class TownArea extends BaseArea {
         this.entityManager = entityManager;
         
         
-        this.entityManager.AddEntity(new TownEntity(handler,2160,2480,Images.TownEntity));
+       // this.entityManager.AddEntity(new TownEntity(handler,2160,2480,Images.TownEntity));
 
         
         mapAnim = new Animation(300, Images.Town);
@@ -106,7 +106,7 @@ public class TownArea extends BaseArea {
         townWalls.add(new InWorldWalls(handler, 1760, 0, 640, 1400, "Wall"));									//Left Upper Row
         townWalls.add(new InWorldWalls(handler, 2560, 0, 480, 1400, "Wall"));									//Right Upper Row
         townWalls.add(new InWorldWalls(handler, 3040, 1400, 160, 160, "Wall"));									//Right Upper Tree
-        townWalls.add(new InWorldWalls(handler, 3200, 0, 100, imageHeight, "Wall"));								//Right Border
+        townWalls.add(new InWorldWalls(handler, 3200, 0, 100, imageHeight, "Wall"));							//Right Border
         townWalls.add(new InWorldWalls(handler, 3040, 2520, 160, 160, "Wall"));									//Right Lower Tree 1
         townWalls.add(new InWorldWalls(handler, 2880, 2680, 160, 160, "Wall"));									//Right Lower Tree 2
         townWalls.add(new InWorldWalls(handler, 0, 2840, imageWidth, 100, "Wall"));								//Lower Border
@@ -124,6 +124,10 @@ public class TownArea extends BaseArea {
         
         townWalls.add(new InWorldWalls(handler, 2400, 675, 160, 10, "Door Exit"));
         
+        townWalls.add(new InWorldWalls(handler, 2160, 2575, 80, 25, "Door Lab"));
+        
+        townWalls.add(new InWorldWalls(handler, 2000, 1920, 80, 40, "Door Room1"));
+        townWalls.add(new InWorldWalls(handler, 544*5, 372*5, 16*5, 20*5, "Door Room3"));
         
         
         

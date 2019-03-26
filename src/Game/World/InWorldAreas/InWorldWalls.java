@@ -13,6 +13,10 @@ public class InWorldWalls extends Walls {
 		this.originalY = y;
 		this.handler = handler;
 		this.wallType = wallType;
+		upWall.height = 20;
+		downWall.height = 20;
+		leftWall.width = 20;
+		rightWall.width = 20;
 	}
 
 	@Override

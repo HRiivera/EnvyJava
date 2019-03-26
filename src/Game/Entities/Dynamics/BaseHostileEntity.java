@@ -1,4 +1,4 @@
-package Game.Entities.Dynamics;
+ package Game.Entities.Dynamics;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -253,7 +253,7 @@ public class BaseHostileEntity extends BaseDynamicEntity implements Fighter{
 		chasingPlayer = handler.getEntityManager().getPlayer().getCollision().intersects(detector);
 
 		if (!Player.checkInWorld) {
-			chaseSpeed = 1.5;
+			chaseSpeed = 1;
 		}
 		else {
 			chaseSpeed = 5;

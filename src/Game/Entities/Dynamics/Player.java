@@ -10,6 +10,11 @@ import Game.World.Walls;
 import Game.World.InWorldAreas.CaveArea;
 import Game.World.InWorldAreas.TownArea;
 import Game.World.InWorldAreas.InWorldWalls;
+import Game.World.InWorldAreas.LabArea;
+import Game.World.InWorldAreas.Room1Area;
+import Game.World.InWorldAreas.Room2Area;
+import Game.World.InWorldAreas.Room3Area;
+import Game.World.InWorldAreas.Room4Area;
 import Main.GameSetUp;
 import Main.Handler;
 import Resources.Animation;
@@ -22,16 +27,16 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 	private Rectangle player;
 	private boolean canMove;
-	
+
 	private boolean canMoveUp = true;
 	private boolean canMoveDown = true;
 	private boolean canMoveLeft = true;
 	private boolean canMoveRight = true;
-	
-	
-	
-	
-	
+
+
+
+
+
 	private String secondFacing = "None";
 	public static boolean checkInWorld;
 
@@ -84,7 +89,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 
 			UpdateNextMove();
 			PlayerInput();
-			
+
 
 			if (GameSetUp.SWITCHING) {
 				switchingCoolDown++;
@@ -102,13 +107,13 @@ public class Player extends BaseDynamicEntity implements Fighter {
 			}
 
 		}
-		
-		
-		}
-	
 
-	
-	
+
+	}
+
+
+
+
 	public void checkCanMove(Walls w) {
 		if(player.intersects(w.getUpWall())) {
 			canMoveDown = false;
@@ -122,16 +127,16 @@ public class Player extends BaseDynamicEntity implements Fighter {
 		if(player.intersects(w.getRightWall())) {
 			canMoveLeft = false;
 		}
-		
+
 	}
-	
+
 	public boolean checkSidesIntersect(Walls w) {
 		if(player.intersects(w.getUpWall()) || player.intersects(w.getDownWall()) || player.intersects(w.getLeftWall()) || player.intersects(w.getRightWall())) {
-		return true;
+			return true;
 		}
 		else return false;
 	}
-	
+
 
 	@Override
 	public void render(Graphics g) {
@@ -178,8 +183,8 @@ public class Player extends BaseDynamicEntity implements Fighter {
 	private void PlayerInput() {
 
 
-			
-		
+
+
 		if (handler.getKeyManager().runbutt) {
 			speed = 2;
 		} else {
@@ -317,7 +322,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 		if (!checkInWorld) {
 			for (Walls w : handler.getWorldManager().getWalls()) {
 
-				if (checkSidesIntersect(w)) {
+				if (player.intersects(w)) {
 
 					if (w.getType().equals("Wall")) {
 						checkCanMove(w);
@@ -359,39 +364,35 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							handler.setArea("S");
 							State.setState(handler.getGame().inWorldState.setArea(InWorldState.SArea));
 						}
-						
+
 						if (w.getType().equals("Door Town")) {
 							checkInWorld = true;
-							InWorldState.caveArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
-							InWorldState.caveArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+							InWorldState.townArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+							InWorldState.townArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
 							TownArea.isInTown = true;
 							setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
 							handler.setXInWorldDisplacement(TownArea.playerXSpawn);
 							handler.setYInWorldDisplacement(TownArea.playerYSpawn);
 							GameSetUp.LOADING = true;
 							handler.setArea("Town");
-					
+
 							handler.getGame().getMusicHandler().set_changeMusic("res/music/Littleroot Town Song.mp3");
 							handler.getGame().getMusicHandler().play();
 							handler.getGame().getMusicHandler().setVolume(0.15);
 
 							State.setState(handler.getGame().inWorldState.setArea(InWorldState.townArea));
-							
-						}
-						
-						
-						
-						
-					}
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
 
-				}
-			}
-		} else
 
-		{
+						}}}}} 
+
+		else {
 			if (CaveArea.isInCave) {
 				for (InWorldWalls iw : CaveArea.caveWalls) {
-					if (checkSidesIntersect(iw)) {
+					if (player.intersects(iw)) {
 						if (iw.getType().equals("Wall"))
 							checkCanMove(iw);
 						else {
@@ -399,7 +400,7 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							if (iw.getType().equals("Start Exit")) {
 
 								handler.setXDisplacement(handler.getXDisplacement() - 450); // Sets the player x/y
-																							// outside the
+								// outside the
 								handler.setYDisplacement(handler.getYDisplacement() + 400); // Cave
 
 							} else if (iw.getType().equals("End Exit")) {
@@ -420,11 +421,12 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							checkInWorld = false;
 							System.out.println("Left Cave");
 							setWidthAndHeight(InMapWidthFrontAndBack, InMapHeightFront);
-						}
-					}
-				}
-			}
-			
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
+
+						}}}}
 
 			else if (Player.isinArea) {
 
@@ -434,22 +436,21 @@ public class Player extends BaseDynamicEntity implements Fighter {
 						if (iw.getType().equals("Wall"))
 							checkCanMove(iw);
 
-					}
-				}
-			}
-			
+					}}}
+
 			else if (TownArea.isInTown) {
 
 				for (InWorldWalls iw : TownArea.townWalls) {
 
-					if (nextArea.intersects(iw)) {
+					if (player.intersects(iw)) {
 						if (iw.getType().equals("Wall"))
 							checkCanMove(iw);
+
 						else if(iw.getType().equals("Door Exit")){
-							
+
 							handler.setXDisplacement(-200);
 							handler.setYDisplacement(150);
-							
+
 							GameSetUp.LOADING = true;
 							handler.setArea("None");
 
@@ -462,357 +463,569 @@ public class Player extends BaseDynamicEntity implements Fighter {
 							checkInWorld = false;
 							System.out.println("Left Town");
 							setWidthAndHeight(InMapWidthFrontAndBack, InMapHeightFront);
-							
-							
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
+
 						}
+						else if(iw.getType().equals("Door Lab")){
+
+							checkInWorld = true;
+							InWorldState.labArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+							InWorldState.labArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+							;
+							handler.setXInWorldDisplacement(LabArea.playerXSpawn);
+							handler.setYInWorldDisplacement(LabArea.playerYSpawn);
+							GameSetUp.LOADING = true;
+							handler.setArea("Lab");
+
+							State.setState(handler.getGame().inWorldState.setArea(InWorldState.labArea));
+							TownArea.isInTown = false;
+							LabArea.isInLab = true;
+							System.out.println("Left Town");
+							setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
+
+						}
+						else if(iw.getType().equals("Door Room1")){
+
+							checkInWorld = true;
+							InWorldState.labArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+							InWorldState.labArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+							setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+							handler.setXInWorldDisplacement(Room1Area.playerXSpawn);
+							handler.setYInWorldDisplacement(Room1Area.playerYSpawn);
+							GameSetUp.LOADING = true;
+							handler.setArea("Room1");
+
+							State.setState(handler.getGame().inWorldState.setArea(InWorldState.room1Area));
+							TownArea.isInTown = false;
+							Room1Area.isInRoom1 = true;
+							System.out.println("Left Town");
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
+
+						}
+						else if(iw.getType().equals("Door Room3")){
+
+							checkInWorld = true;
+							InWorldState.labArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+							InWorldState.labArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+							setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+							handler.setXInWorldDisplacement(Room3Area.playerXSpawn);
+							handler.setYInWorldDisplacement(Room3Area.playerYSpawn);
+							GameSetUp.LOADING = true;
+							handler.setArea("Room3");
+
+							State.setState(handler.getGame().inWorldState.setArea(InWorldState.room3Area));
+							TownArea.isInTown = false;
+							Room3Area.isInRoom3 = true;
+							System.out.println("Left Town");
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
+					}}}}
+
+			else if (LabArea.isInLab) {
+				for (InWorldWalls iw : LabArea.labWalls) {
+					if (player.intersects(iw)) {
+						if (iw.getType().equals("Wall"))
+							checkCanMove(iw);
+
+						else if (iw.getType().equals("Door Town")) {
+							checkInWorld = true;
+							InWorldState.townArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+							InWorldState.townArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+							TownArea.isInTown = true;
+							LabArea.isInLab = false;
+							setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+							handler.setXInWorldDisplacement(-1200);
+							handler.setYInWorldDisplacement(-2000);
+							GameSetUp.LOADING = true;
+							handler.setArea("Town");
+							State.setState(handler.getGame().inWorldState.setArea(InWorldState.townArea));
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
+
+						}}}}
+			else if (Room1Area.isInRoom1) {
+				for (InWorldWalls iw : Room1Area.room1Walls) {
+					if (player.intersects(iw)) {
+						if (iw.getType().equals("Wall"))
+							checkCanMove(iw);
+
+						else if (iw.getType().equals("Door Town")) {
+							checkInWorld = true;
+							InWorldState.townArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+							InWorldState.townArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+							TownArea.isInTown = true;
+							Room1Area.isInRoom1 = false;
+							setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+							handler.setXInWorldDisplacement(-1050);
+							handler.setYInWorldDisplacement(-1400);
+							GameSetUp.LOADING = true;
+							handler.setArea("Town");
+							State.setState(handler.getGame().inWorldState.setArea(InWorldState.townArea));
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
+						}
+						else if (iw.getType().equals("Door Room2")) {
+							checkInWorld = true;
+							InWorldState.townArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+							InWorldState.townArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+							Room2Area.isInRoom2 = true;
+							Room1Area.isInRoom1 = false;
+							setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+							handler.setXInWorldDisplacement(Room2Area.playerXSpawn);
+							handler.setYInWorldDisplacement(Room2Area.playerYSpawn);
+							GameSetUp.LOADING = true;
+							handler.setArea("Room2");
+							State.setState(handler.getGame().inWorldState.setArea(InWorldState.room2Area));
+							canMoveUp = true;
+							canMoveDown = true;
+							canMoveRight = true;
+							canMoveLeft = true;
+						}}}}
+			
+				else if (Room2Area.isInRoom2) {
+					for (InWorldWalls iw : Room2Area.room2Walls) {
+						if (player.intersects(iw)) {
+							if (iw.getType().equals("Wall"))
+								checkCanMove(iw);
+
+							else if (iw.getType().equals("Door Room1")) {
+								checkInWorld = true;
+								InWorldState.townArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+								InWorldState.townArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+								Room1Area.isInRoom1 = true;
+								Room2Area.isInRoom2 = false;
+								setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+								handler.setXInWorldDisplacement(300);
+								handler.setYInWorldDisplacement(325);
+								GameSetUp.LOADING = true;
+								handler.setArea("Room1");
+								State.setState(handler.getGame().inWorldState.setArea(InWorldState.room1Area));
+								canMoveUp = true;
+								canMoveDown = true;
+								canMoveRight = true;
+								canMoveLeft = true;
+							}}}}
+				else if (Room3Area.isInRoom3) {
+					for (InWorldWalls iw : Room3Area.room3Walls) {
+						if (player.intersects(iw)) {
+							if (iw.getType().equals("Wall"))
+								checkCanMove(iw);
+
+							else if (iw.getType().equals("Door Town")) {
+								checkInWorld = true;
+								InWorldState.townArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+								InWorldState.townArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+								TownArea.isInTown = true;
+								Room3Area.isInRoom3 = false;
+								setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+								handler.setXInWorldDisplacement(-1750);
+								handler.setYInWorldDisplacement(-1400);
+								GameSetUp.LOADING = true;
+								handler.setArea("Town");
+								State.setState(handler.getGame().inWorldState.setArea(InWorldState.townArea));
+								canMoveUp = true;
+								canMoveDown = true;
+								canMoveRight = true;
+								canMoveLeft = true;
+							}
+							else if (iw.getType().equals("Door Room4")) {
+								checkInWorld = true;
+								InWorldState.townArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+								InWorldState.townArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+								Room4Area.isInRoom4 = true;
+								Room3Area.isInRoom3 = false;
+								setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+								handler.setXInWorldDisplacement(Room4Area.playerXSpawn);
+								handler.setYInWorldDisplacement(Room4Area.playerYSpawn);
+								GameSetUp.LOADING = true;
+								handler.setArea("Room4");
+								State.setState(handler.getGame().inWorldState.setArea(InWorldState.room4Area));
+								canMoveUp = true;
+								canMoveDown = true;
+								canMoveRight = true;
+								canMoveLeft = true;
+							}}}}
+				else if (Room4Area.isInRoom4) {
+					for (InWorldWalls iw : Room4Area.room4Walls) {
+						if (player.intersects(iw)) {
+							if (iw.getType().equals("Wall"))
+								checkCanMove(iw);
+
+							else if (iw.getType().equals("Door Room3")) {
+								checkInWorld = true;
+								InWorldState.townArea.oldPlayerXCoord = (int) (handler.getXDisplacement());
+								InWorldState.townArea.oldPlayerYCoord = (int) (handler.getYDisplacement());
+								Room3Area.isInRoom3 = true;
+								Room4Area.isInRoom4 = false;
+								setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+								handler.setXInWorldDisplacement(800);
+								handler.setYInWorldDisplacement(325);
+								GameSetUp.LOADING = true;
+								handler.setArea("Room4");
+								State.setState(handler.getGame().inWorldState.setArea(InWorldState.room3Area));
+								canMoveUp = true;
+								canMoveDown = true;
+								canMoveRight = true;
+								canMoveLeft = true;
+							}}}}
+
+			}
+		}
+
+		/**
+		 *
+		 * @param XorY  where true is X and false is Y
+		 * @param speed
+		 */
+		private void Move(boolean XorY, int speed) {
+
+			isMoving = true;
+
+			if (!checkInWorld) {
+				if (XorY) {
+					setWidthAndHeight(InMapWidthSideways, InMapHeightSideways);
+					handler.setXDisplacement(handler.getXDisplacement() + speed);
+				} else {
+					if (facing.equals("Up")) {
+						setWidthAndHeight(InMapWidthFrontAndBack, InMapHeightBack);
+					} else {
+						setWidthAndHeight(InMapWidthFrontAndBack, InMapHeightFront);
 					}
-					
+					handler.setYDisplacement(handler.getYDisplacement() + speed);
 				}
-			}
-			
-			
-			
-		}
-	}
-
-	/**
-	 *
-	 * @param XorY  where true is X and false is Y
-	 * @param speed
-	 */
-	private void Move(boolean XorY, int speed) {
-
-		isMoving = true;
-
-		if (!checkInWorld) {
-			if (XorY) {
-				setWidthAndHeight(InMapWidthSideways, InMapHeightSideways);
-				handler.setXDisplacement(handler.getXDisplacement() + speed);
 			} else {
-				if (facing.equals("Up")) {
-					setWidthAndHeight(InMapWidthFrontAndBack, InMapHeightBack);
+				if (XorY) {
+					setWidthAndHeight(InAreaWidthSideways, InAreaHeightSideways);
+					handler.setXInWorldDisplacement((handler.getXInWorldDisplacement() + speed));
 				} else {
-					setWidthAndHeight(InMapWidthFrontAndBack, InMapHeightFront);
-				}
-				handler.setYDisplacement(handler.getYDisplacement() + speed);
-			}
-		} else {
-			if (XorY) {
-				setWidthAndHeight(InAreaWidthSideways, InAreaHeightSideways);
-				handler.setXInWorldDisplacement((handler.getXInWorldDisplacement() + speed));
-			} else {
-				if (facing.equals("Up")) {
-					setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightBack);
-				} else {
-					setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+					if (facing.equals("Up")) {
+						setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightBack);
+					} else {
+						setWidthAndHeight(InAreaWidthFrontAndBack, InAreaHeightFront);
+					}
+
+					handler.setYInWorldDisplacement(handler.getYInWorldDisplacement() + speed);
 				}
 
-				handler.setYInWorldDisplacement(handler.getYInWorldDisplacement() + speed);
 			}
 
 		}
 
-	}
-
-	@Override
-	public Rectangle getCollision() {
-		return player;
-	}
-
-	/**
-	 * !!!!!!!!!TO REDESIGN OR DELETE!!!!!!!
-	 *
-	 *
-	 * Called when the player has collided with another static entity. Used to push
-	 * the player back from passing through a static entity.
-	 *
-	 * @param collidedXPos the xPosition the static entity is located at.
-	 */
-	public void WallBoundary(double collidedXPos) {
-
-		int playerXPos = Math.abs(handler.getXDisplacement());
-
-		if (playerXPos < collidedXPos / 2) {
-			handler.setXDisplacement(handler.getXDisplacement() + 2);
-		} else if (playerXPos > collidedXPos / 2) {
-			handler.setXDisplacement(handler.getXDisplacement() - 2);
+		@Override
+		public Rectangle getCollision() {
+			return player;
 		}
-	}
 
-	/*
-	 * Although the TRUE Player position is in the middle of the screen, these two
-	 * methods give us the value as if the player was part of the world.
-	 */
-	@Override
-	public double getXOffset() {
+		/**
+		 * !!!!!!!!!TO REDESIGN OR DELETE!!!!!!!
+		 *
+		 *
+		 * Called when the player has collided with another static entity. Used to push
+		 * the player back from passing through a static entity.
+		 *
+		 * @param collidedXPos the xPosition the static entity is located at.
+		 */
+		public void WallBoundary(double collidedXPos) {
 
-		if (!checkInWorld)
-			return -this.handler.getXDisplacement() + xPosition;
-		else
-			return -this.handler.getXInWorldDisplacement() + xPosition;
-	}
+			int playerXPos = Math.abs(handler.getXDisplacement());
 
-	@Override
-	public double getYOffset() {
+			if (playerXPos < collidedXPos / 2) {
+				handler.setXDisplacement(handler.getXDisplacement() + 2);
+			} else if (playerXPos > collidedXPos / 2) {
+				handler.setXDisplacement(handler.getXDisplacement() - 2);
+			}
+		}
 
-		if (!checkInWorld)
-			return -this.handler.getYDisplacement() + yPosition;
-		else
-			return -this.handler.getYInWorldDisplacement() + yPosition;
-	}
+		/*
+		 * Although the TRUE Player position is in the middle of the screen, these two
+		 * methods give us the value as if the player was part of the world.
+		 */
+		@Override
+		public double getXOffset() {
 
-	public void setWidthAndHeight(int newWidth, int newHeight) {
-		this.currentWidth = newWidth;
-		this.currentHeight = newHeight;
-	}
+			if (!checkInWorld)
+				return -this.handler.getXDisplacement() + xPosition;
+			else
+				return -this.handler.getXInWorldDisplacement() + xPosition;
+		}
 
-	// GETTERS AND SETTERS FOR FIGHT STATS
+		@Override
+		public double getYOffset() {
 
-	double health = 200, mana = 100, xp = 0, lvl = 1, defense = 16, str = 10, intl = 25, mr = 12, cons = 20, acc = 12, evs = 4,
-			initiative = 13, maxHealth = 200, maxMana = 100, lvlUpExp = 200;
+			if (!checkInWorld)
+				return -this.handler.getYDisplacement() + yPosition;
+			else
+				return -this.handler.getYInWorldDisplacement() + yPosition;
+		}
 
-	String Class = "none", skill = "No Skill Available";
-	String[] buffs = {}, debuffs = {};
-	
+		public void setWidthAndHeight(int newWidth, int newHeight) {
+			this.currentWidth = newWidth;
+			this.currentHeight = newHeight;
+		}
 
-	@Override
-	public double getMaxHealth() {
-		return maxHealth;
-	}
+		// GETTERS AND SETTERS FOR FIGHT STATS
 
-	@Override
-	public double getMaxMana() {
-		return maxMana;
-	}
+		double health = 200, mana = 100, xp = 0, lvl = 1, defense = 16, str = 10, intl = 25, mr = 12, cons = 20, acc = 12, evs = 4,
+				initiative = 13, maxHealth = 200, maxMana = 100, lvlUpExp = 200;
 
-	@Override
-	public double getHealth() {
-		return health;
-	}
+		String Class = "none", skill = "No Skill Available";
+		String[] buffs = {}, debuffs = {};
 
-	@Override
-	public void setHealth(double health) {
-		this.health = health;
-	}
 
-	@Override
-	public double getMana() {
-		return mana;
-	}
+		@Override
+		public double getMaxHealth() {
+			return maxHealth;
+		}
 
-	@Override
-	public void setMana(double mana) {
-		this.mana = mana;
-	}
+		@Override
+		public double getMaxMana() {
+			return maxMana;
+		}
 
-	@Override
-	public double getXp() {
-		return xp;
-	}
+		@Override
+		public double getHealth() {
+			return health;
+		}
 
-	@Override
-	public void setXp(double xp) {
-		this.xp = xp;
-	}
+		@Override
+		public void setHealth(double health) {
+			this.health = health;
+		}
 
-	@Override
-	public double getLvl() {
-		return lvl;
-	}
+		@Override
+		public double getMana() {
+			return mana;
+		}
 
-	@Override
-	public void setLvl(double lvl) {
-		this.lvl = lvl;
-	}
+		@Override
+		public void setMana(double mana) {
+			this.mana = mana;
+		}
 
-	@Override
-	public double getDefense() {
-		return defense;
-	}
+		@Override
+		public double getXp() {
+			return xp;
+		}
 
-	@Override
-	public void setDefense(double defense) {
-		this.defense = defense;
-	}
+		@Override
+		public void setXp(double xp) {
+			this.xp = xp;
+		}
 
-	@Override
-	public double getStr() {
-		return this.str;
-	}
+		@Override
+		public double getLvl() {
+			return lvl;
+		}
 
-	@Override
-	public void setStr(double str) {
-		this.str = str;
-	}
+		@Override
+		public void setLvl(double lvl) {
+			this.lvl = lvl;
+		}
 
-	@Override
-	public double getIntl() {
-		return intl;
-	}
+		@Override
+		public double getDefense() {
+			return defense;
+		}
 
-	@Override
-	public void setIntl(double intl) {
-		this.intl = intl;
-	}
+		@Override
+		public void setDefense(double defense) {
+			this.defense = defense;
+		}
 
-	@Override
-	public double getMr() {
-		return mr;
-	}
+		@Override
+		public double getStr() {
+			return this.str;
+		}
 
-	@Override
-	public void setMr(double mr) {
-		this.mr = mr;	
-	}
+		@Override
+		public void setStr(double str) {
+			this.str = str;
+		}
 
-	@Override
-	public double getCons() {
-		return cons;
-	}
+		@Override
+		public double getIntl() {
+			return intl;
+		}
 
-	@Override
-	public void setCons(double cons) {
-		this.cons = cons;
-	}
+		@Override
+		public void setIntl(double intl) {
+			this.intl = intl;
+		}
 
-	@Override
-	public double getAcc() {
-		return this.acc;
-	}
+		@Override
+		public double getMr() {
+			return mr;
+		}
 
-	@Override
-	public void setAcc(double acc) {
-		this.acc = acc;
-	}
+		@Override
+		public void setMr(double mr) {
+			this.mr = mr;	
+		}
 
-	@Override
-	public double getEvs() {
-		return evs;
-	}
+		@Override
+		public double getCons() {
+			return cons;
+		}
 
-	@Override
-	public void setEvs(double evs) {
-		this.evs = evs;
-	}
+		@Override
+		public void setCons(double cons) {
+			this.cons = cons;
+		}
 
-	@Override
-	public double getInitiative() {
-		return initiative;
-	}
+		@Override
+		public double getAcc() {
+			return this.acc;
+		}
 
-	@Override
-	public void setInitiative(double initiative) {
-		this.initiative = initiative;
-	}
+		@Override
+		public void setAcc(double acc) {
+			this.acc = acc;
+		}
 
-	@Override
-	public String getclass() {
-		return Class;
-	}
+		@Override
+		public double getEvs() {
+			return evs;
+		}
 
-	@Override
-	public void setClass(String aClass) {
-		this.Class = aClass;
-	}
+		@Override
+		public void setEvs(double evs) {
+			this.evs = evs;
+		}
 
-	@Override
-	public String getSkill() {
-		return this.skill;
-	}
+		@Override
+		public double getInitiative() {
+			return initiative;
+		}
 
-	@Override
-	public void setSkill(String skill) {
-		this.skill = skill;
-	}
+		@Override
+		public void setInitiative(double initiative) {
+			this.initiative = initiative;
+		}
 
-	@Override
-	public String[] getBuffs() {
-		return buffs;
-	}
+		@Override
+		public String getclass() {
+			return Class;
+		}
 
-	@Override
-	public void setBuffs(String[] buffs) {
-		this.buffs = buffs;
-	}
+		@Override
+		public void setClass(String aClass) {
+			this.Class = aClass;
+		}
 
-	@Override
-	public String[] getDebuffs() {
-		return debuffs;
-	}
+		@Override
+		public String getSkill() {
+			return this.skill;
+		}
 
-	@Override
-	public void setDebuffs(String[] debuffs) {
-		this.debuffs = debuffs;
-	}
-	public void setWeaken(boolean arg) {
-		this.weakenS = arg;
-	}
+		@Override
+		public void setSkill(String skill) {
+			this.skill = skill;
+		}
 
-	public boolean getWeaken() {
+		@Override
+		public String[] getBuffs() {
+			return buffs;
+		}
 
-		return this.weakenS;
+		@Override
+		public void setBuffs(String[] buffs) {
+			this.buffs = buffs;
+		}
 
-	}
+		@Override
+		public String[] getDebuffs() {
+			return debuffs;
+		}
 
-	public void addXp(double xp) {
-		this.xp += xp;
-	}
+		@Override
+		public void setDebuffs(String[] debuffs) {
+			this.debuffs = debuffs;
+		}
+		public void setWeaken(boolean arg) {
+			this.weakenS = arg;
+		}
 
-	public double getLvlUpXp() {
-		return lvlUpExp;
-	}
-	public void setAcceptQuest(boolean arg) {
-		this.AcceptQuest = arg;
-	}
+		public boolean getWeaken() {
 
-	public boolean getAcceptQuest() {
-
-		return this.AcceptQuest;
-
-	}
-	
-	public void setQuestComplete(boolean arg) {
-		this.QuestComplete = arg;
-	}
-
-	public boolean getQuestComplete() {
-
-		return this.QuestComplete;
-
-	}
-	
-	public void setQuestTurnedIn(boolean arg) {
-		this.QuestTurnedIn = arg;
-	}
-
-	public boolean getQuestTurnedIn() {
-
-		return this.QuestTurnedIn;
-
-	}
-
-	
-
-	private void levelUP() {
-		if(xp >= lvlUpExp) {
-			xp-= lvlUpExp;
-			lvlUpExp *= 1.3;
-			maxHealth += 15 + 5*(lvl-1);
-			maxMana += 5 + 5*(lvl-1);
-			str += 1 + 1 *(int)((lvl - 1)/2);
-			acc += 1 + 1 *(int)((lvl - 1)/2);
-			defense += 1 + 1 *(int)((lvl - 1)/2);
-			intl += 1 + 1 *(int)((lvl - 1)/2);
-			mr += 1 + 1 *(int)((lvl - 1)/2);
-			cons += 1 + 1 *(int)((lvl - 1)/2);
-			if(lvl%4 ==0)
-				evs++;
-
-			lvl++;
-
+			return this.weakenS;
 
 		}
 
-	}
+		public void addXp(double xp) {
+			this.xp += xp;
+		}
 
-}
+		public double getLvlUpXp() {
+			return lvlUpExp;
+		}
+		public void setAcceptQuest(boolean arg) {
+			this.AcceptQuest = arg;
+		}
+
+		public boolean getAcceptQuest() {
+
+			return this.AcceptQuest;
+
+		}
+
+		public void setQuestComplete(boolean arg) {
+			this.QuestComplete = arg;
+		}
+
+		public boolean getQuestComplete() {
+
+			return this.QuestComplete;
+
+		}
+
+		public void setQuestTurnedIn(boolean arg) {
+			this.QuestTurnedIn = arg;
+		}
+
+		public boolean getQuestTurnedIn() {
+
+			return this.QuestTurnedIn;
+
+		}
+
+
+
+		private void levelUP() {
+			if(xp >= lvlUpExp) {
+				xp-= lvlUpExp;
+				lvlUpExp *= 1.3;
+				maxHealth += 15 + 5*(lvl-1);
+				maxMana += 5 + 5*(lvl-1);
+				str += 1 + 1 *(int)((lvl - 1)/2);
+				acc += 1 + 1 *(int)((lvl - 1)/2);
+				defense += 1 + 1 *(int)((lvl - 1)/2);
+				intl += 1 + 1 *(int)((lvl - 1)/2);
+				mr += 1 + 1 *(int)((lvl - 1)/2);
+				cons += 1 + 1 *(int)((lvl - 1)/2);
+				if(lvl%4 ==0)
+					evs++;
+
+				lvl++;
+
+
+			}
+
+		}
+
+	}

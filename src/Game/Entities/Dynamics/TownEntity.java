@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import Game.Entities.Statics.BaseStaticEntity;
-import Game.World.InWorldAreas.TownArea;
+import Game.World.InWorldAreas.LabArea;
 import Main.Handler;
 import Resources.Images;
 import javafx.scene.input.KeyCode;
@@ -55,8 +55,8 @@ public class TownEntity extends BaseStaticEntity {
 
 	@Override
 	public void render(Graphics g) {
-		if(TownArea.isInTown) {
-			g.drawRect(ir.x, ir.y, ir.width, ir.height);
+		if(LabArea.isInLab) {
+			//g.drawRect(ir.x, ir.y, ir.width, ir.height);
 
 
 			g.drawImage(Images.TownEntity, (int)(handler.getXInWorldDisplacement() + xPosition),(int)( handler.getYInWorldDisplacement() + yPosition), width, height, null);
@@ -71,7 +71,7 @@ public class TownEntity extends BaseStaticEntity {
 
 		ir.x = handler.getXInWorldDisplacement() + originalX+25;
 		ir.y = handler.getYInWorldDisplacement() + originalY+200;
-		if(TownArea.isInTown) {
+		if(LabArea.isInLab) {
 			if(releasedE() && ir.intersects(handler.getEntityManager().getPlayer().getCollision())) {
 				text=!text;
 			}

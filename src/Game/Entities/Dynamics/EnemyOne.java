@@ -18,7 +18,7 @@ public class EnemyOne extends BaseHostileEntity implements Fighter{
     Rectangle enemyOne;
     int width, height;
     private Animation animDown, animUp, animRight, animLeft, animDownRight, animDownLeft, animUpLeft, animUpRight;
-    private int animSpeed = 150;
+    private int animSpeed = 300;
 
     public EnemyOne(Handler handler, int xPosition, int yPosition, String state, String name, String area, BufferedImage[] animFrames) {
         super(handler, yPosition, yPosition,state,name,area,animFrames);

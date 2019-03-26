@@ -48,6 +48,12 @@ public class Images {
 	public static BufferedImage TownEntity;
 	public static BufferedImage TownEntityGUI;
 	public static BufferedImage[] Town;
+	public static BufferedImage Lab;
+	public static BufferedImage Room1;
+	public static BufferedImage Room2;
+	public static BufferedImage Room3;
+	public static BufferedImage Room4;
+	
 	
 	
 	public static SpriteSheet pikaSheet;
@@ -112,9 +118,17 @@ public class Images {
 
 	public static BufferedImage CaveMap;
 	public static BufferedImage Loading;
+	
+	
 	public static Image ScaledCave;
 	public static Image ScaledArea;
 	public static Image ScaledTown[];
+	public static Image ScaledLab;
+	public static Image ScaledRoom1;
+	public static Image ScaledRoom2;
+	public static Image ScaledRoom3;
+	public static Image ScaledRoom4;
+	
 	public static BufferedImage tree;
 
 	public Images() {
@@ -187,6 +201,13 @@ public class Images {
 			Town[0] = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootcrop.png"));
 			Town[1] = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootcrop2.png"));
 			Town[2] = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootcrop3.png"));
+			
+			Lab =  ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootLab.png"));
+			Room1 = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootRoom1.png"));
+			Room2 = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootRoom2.png"));
+			Room3 = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootRoom3.png"));
+			Room4 = ImageIO.read(getClass().getResourceAsStream("/Worlds/LittleRootRoom4.png"));
+			
 			
 			smokeHouseSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/House.png")));
 			statueSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/statueSheet.png")));
@@ -824,7 +845,11 @@ public class Images {
 		Town[2] = toBufferedImage(ScaledTown[2]);
 		Town[3] = toBufferedImage(ScaledTown[0]);
 		
-		
+		ScaledLab = Images.Lab.getScaledInstance(1040, 1040, Image.SCALE_FAST);
+		ScaledRoom1 = Images.Room1.getScaledInstance(880, 720,  Image.SCALE_FAST);
+		ScaledRoom2 = Images.Room2.getScaledInstance(720, 640,  Image.SCALE_FAST);
+		ScaledRoom3 = Images.Room3.getScaledInstance(880, 720,  Image.SCALE_FAST);
+		ScaledRoom4 = Images.Room4.getScaledInstance(720, 640,  Image.SCALE_FAST);
 		
 		ScaledCave = Images.CaveMap.getScaledInstance(3680, 4000, Image.SCALE_FAST); // 368x400 pixel image
 	}
