@@ -786,13 +786,21 @@ public class FightState extends InWorldState{
 	        g.setColor(Color.RED);
 	        g.setFont((new Font("IMPACT", Font.ITALIC, 25)));
 	        g.drawString(dmg , playerRect.x, playerRect.y - 20);
-
-
+	 
+	        if(enemy.name.equalsIgnoreCase("Rayquaza")) {
+	        	if (enemyRect.x >= (handler.getWidth() * 4 / 5) -790 && enemyRect.x <= (handler.getWidth() * 4 / 5) - 690) {
+	                enemyRect.x = (handler.getWidth() * 4 / 5-800);
+	                Eattacking = false;
+	                EendTurn = true;
+	        	}
+	        }
+	        else {
             if (enemyRect.x >= (handler.getWidth() * 4 / 5) + 10 && enemyRect.x <= (handler.getWidth() * 4 / 5) + 110) {
                 enemyRect.x = (handler.getWidth() * 4 / 5);
                 Eattacking = false;
                 EendTurn = true;
             }
+	        }
 
             if (EendTurn || battleOver) {
                 Eattacking = false;
