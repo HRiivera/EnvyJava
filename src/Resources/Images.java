@@ -43,6 +43,8 @@ public class Images {
 	
 	
 	public static BufferedImage cobblestone;
+	public static BufferedImage textbox;
+	public static BufferedImage professorhead;
 
 	public static BufferedImage E;
 	public static BufferedImage TownEntity;
@@ -225,8 +227,9 @@ public class Images {
 
 
 			
-			
+			textbox = ImageIO.read(getClass().getResourceAsStream("/Sheets/textbox.png"));
 			cobblestone = ImageIO.read(getClass().getResourceAsStream("/Sheets/cobblestone.png"));
+			professorhead = ImageIO.read(getClass().getResourceAsStream("/Sheets/professorhead.png"));
 
 			E = ImageIO.read(getClass().getResourceAsStream("/Buttons/E.png"));
 			TownEntity = ImageIO.read(getClass().getResourceAsStream("/Sheets/TownEntity.png"));

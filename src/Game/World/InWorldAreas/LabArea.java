@@ -71,7 +71,10 @@ public class LabArea extends BaseArea {
         g2.fill(background);
 
         g.drawImage(Images.ScaledLab, handler.getXInWorldDisplacement(), handler.getYInWorldDisplacement(), null);
-
+        
+        
+        
+        
         if (GameSetUp.DEBUGMODE) {
             for (Walls w : labWalls) {
 
