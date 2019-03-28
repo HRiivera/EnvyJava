@@ -21,6 +21,13 @@ public class TownEntity extends BaseStaticEntity {
 	private int originalX;
 	private int originalY;
 	public Boolean text=false;
+	int counter=0;
+	int showtext=0;
+	int showtext2=0;
+	int showtext3=0;
+	String textdialogue= "Defeat an Enemy to unlock a skill ";
+	String textdialogue2="You've unclocked a new  Freeze skill,";
+	String textdialogue3=" and a new cave area to explore!";
 
 	private Boolean pressed = false;
 
@@ -68,6 +75,33 @@ public class TownEntity extends BaseStaticEntity {
 
 	@Override
 	public void tick() {
+		
+		
+		if(text==true) {
+			
+			counter++;
+			if(counter>2) {
+			
+		 if(showtext<=textdialogue.length()-1) {
+				
+				showtext++;
+				
+			}if(showtext2<=textdialogue2.length()-1) {
+				showtext2++;
+				
+			}else if(showtext3<=textdialogue3.length()-1) {
+				showtext3++;
+			}
+			counter=0;
+			} 
+			
+			
+		}
+		
+		else {
+			counter=0;
+		}
+		
 
 		ir.x = handler.getXInWorldDisplacement() + originalX+25;
 		ir.y = handler.getYInWorldDisplacement() + originalY+200;
@@ -119,12 +153,18 @@ public class TownEntity extends BaseStaticEntity {
 				g.setFont(new Font("Times New Roman",Font.BOLD,20));
 
 				if(handler.getEntityManager().getPlayer().getQuestComplete()) {
-					g.drawString("You've unclocked a new  Freeze skill! and a new cave area to explore!",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+425);
+					
+					g.drawImage(Images.textbox, handler.getWidth()/2-250, handler.getHeight()-194, 500,194,null);
+					g.drawImage(Images.professorhead, handler.getWidth()/2-250, handler.getHeight()-150, 179,106,null);
+					g.drawString(textdialogue2.substring(0,showtext2),(int)(xPosition-this.getXOffset())+865,(int)(yPosition-this.getYOffset())+975);
+					g.drawString(textdialogue3.substring(0,showtext3),(int)(xPosition-this.getXOffset())+875,(int)(yPosition-this.getYOffset())+1000);
 					handler.getEntityManager().getPlayer().setQuestTurnedIn(true);
 					handler.getEntityManager().getPlayer().setSkill("Freeze");
 					System.out.println("Quest Turned In");			
 				}else {
-					g.drawString("Defeat an Enemy to unlock a skill ",(int)(xPosition-this.getXOffset())+1000,(int)(yPosition-this.getYOffset())+400);
+					g.drawImage(Images.textbox, handler.getWidth()/2-250, handler.getHeight()-194, 500,194,null);
+					g.drawImage(Images.professorhead, handler.getWidth()/2-250, handler.getHeight()-150, 179,106,null);
+					g.drawString(textdialogue.substring(0,showtext),(int)(xPosition-this.getXOffset())+875,(int)(yPosition-this.getYOffset())+975);
 					handler.getEntityManager().getPlayer().setAcceptQuest(true);
 					System.out.println("Accepted Quest");
 				}
