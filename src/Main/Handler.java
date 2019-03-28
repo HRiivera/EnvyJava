@@ -2,6 +2,7 @@ package Main;
 
 import Game.Entities.Dynamics.BaseHostileEntity;
 import Game.Entities.Dynamics.EnemyOne;
+import Game.Entities.Dynamics.EnemyTwo;
 import Input.KeyManager;
 import Input.MouseManager;
 
@@ -135,6 +136,27 @@ public class Handler {
 									  String Class, String Skill, String[] buffs, String[] debuffs){
 		if(typeOfEnemy.equals("EnemyOne")) {
 			EnemyOne n = new EnemyOne(handler, xPosition, yPosition, state, name, area,images);
+			n.setAcc(acc);
+			n.setBuffs(buffs);
+			n.setClass(Class);
+			n.setCons(cons);
+			n.setDebuffs(debuffs);
+			n.setDefense(def);
+			n.setEvs(evs);
+			n.setHealth(hp);
+            n.setMaxHealth(hp);
+			n.setInitiative(initiative);
+			n.setIntl(intl);
+			n.setMr(mr);
+			n.setLvl(lvl);
+			n.setMana(mana);
+			n.setSkill(Skill);
+			n.setStr(str);
+			n.setXp(xp);
+			return n;
+		}
+		else if(typeOfEnemy.equals("EnemyTwo")) {
+			EnemyTwo n = new EnemyTwo(handler, xPosition, yPosition, state, name, area,images);
 			n.setAcc(acc);
 			n.setBuffs(buffs);
 			n.setClass(Class);

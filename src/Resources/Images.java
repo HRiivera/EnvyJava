@@ -67,7 +67,8 @@ public class Images {
 	public static BufferedImage[] pika_backright;
 	public static BufferedImage[] pika_idle;
 	
-	
+	public static SpriteSheet raySheet;
+	public static BufferedImage[] ray_idle;
 
 
 	public static SpriteSheet playerSheet;
@@ -176,7 +177,7 @@ public class Images {
 		pika_backright = new BufferedImage[2];
 		pika_idle = new BufferedImage[8];
 		
-		
+		ray_idle = new BufferedImage[3];
 		
 		
 
@@ -396,7 +397,11 @@ public class Images {
 			pika_idle[7] = pikaSheet.crop(587, 74, 22, 26);			//frontright
 			
 			
+			raySheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/RaquazaTiny.png")));
 			
+			ray_idle[0] = raySheet.crop(0, 39, 64, 68);
+			ray_idle[1] = raySheet.crop(67, 39, 64, 68);
+			ray_idle[2] = raySheet.crop(134, 39, 64, 68);
 
 
 

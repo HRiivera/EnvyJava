@@ -17,13 +17,13 @@ public class EnemyTwo extends BaseHostileEntity implements Fighter{
 
     Rectangle enemyTwo;
     int width, height;
-    private Animation animDown, animUp, animRight, animLeft, animDownRight, animDownLeft, animUpLeft, animUpRight;
+    private Animation animIdle;
     private int animSpeed = 300;
 
     public EnemyTwo(Handler handler, int xPosition, int yPosition, String state, String name, String area, BufferedImage[] animFrames) {
         super(handler, yPosition, yPosition,state,name,area,animFrames);
-        width = 22*3;
-        height = 26*3;
+        width = 64*3;
+        height = 68*3;
         speed = 1;
         type="EnemyOne";
         this.setXOffset(xPosition);
@@ -34,52 +34,16 @@ public class EnemyTwo extends BaseHostileEntity implements Fighter{
         
         	
 
-        animDown = new Animation(animSpeed, Images.pika_front);
-        animUp = new Animation(animSpeed, Images.pika_back);
-        animRight = new Animation(animSpeed, Images.pika_right);
-        animLeft = new Animation(animSpeed, Images.pika_left);
-        animDownRight = new Animation(animSpeed, Images.pika_frontright);
-        animDownLeft = new Animation(animSpeed, Images.pika_frontleft);
-        animUpLeft = new Animation(animSpeed, Images.pika_backleft);
-        animUpRight = new Animation(animSpeed, Images.pika_backright);
+        animIdle = new Animation(animSpeed, Images.ray_idle);
         
         
     }
 
     @Override
     public void tick() {
-    	animDown.tick();
-		animUp.tick();
-		animRight.tick();
-		animLeft.tick();
-		animUpRight.tick();
-		animUpLeft.tick();
-		animDownLeft.tick();
-		animDownRight.tick();
+    	animIdle.tick();
     	
-        if(!Player.isinArea)super.tick();
-        
-        if(CaveArea.isInCave) {
-		if(this.facing == "Up") {width = 22*3;}
-		if(this.facing == "Down") {width = 20*3;}
-		if(this.facing == "Left") {width = 22*3;}
-		if(this.facing == "Right") {width = 22*3;}
-		if(this.facing == "UpRight") {width = 25*3;}
-		if(this.facing == "UpLeft") {width = 25*3;}
-		if(this.facing == "DownLeft") {width = 22*3;}
-		if(this.facing == "DownRight") {width = 22*3;}
-        }
-        else {
-        	height = 26*2;
-    		if(this.facing == "Up") {width = 22*2;}
-    		if(this.facing == "Down") {width = 20*2;}
-    		if(this.facing == "Left") {width = 22*2;}
-    		if(this.facing == "Right") {width = 22*2;}
-    		if(this.facing == "UpRight") {width = 25*2;}
-    		if(this.facing == "UpLeft") {width = 25*2;}
-    		if(this.facing == "DownLeft") {width = 22*2;}
-    		if(this.facing == "DownRight") {width = 22*2;}
-        }
+        if(!Player.isinArea)super.tick();    
     }
 
     @Override
@@ -102,9 +66,7 @@ public class EnemyTwo extends BaseHostileEntity implements Fighter{
 
             g2.setColor(Color.black);
 
-            g2.drawImage(getCurrentAnimationFrameExtended(animDown, animUp, animLeft, animRight, Images.pika_idle, Images.pika_idle,
-						Images.pika_idle, Images.pika_idle, animUpRight, animUpLeft, animDownLeft, animDownRight, Images.pika_idle,
-						 Images.pika_idle, Images.pika_idle, Images.pika_idle),enemyTwo.x,enemyTwo.y,enemyTwo.width,enemyTwo.height,null);
+            g2.drawImage(animIdle.getCurrentFrame(),enemyTwo.x,enemyTwo.y,enemyTwo.width,enemyTwo.height,null);
 
             if (enemyTwo.intersects(handler.getEntityManager().getPlayer().getCollision())) {
                 handler.getEntityManager().getPlayer().facing = "Left";
@@ -113,6 +75,11 @@ public class EnemyTwo extends BaseHostileEntity implements Fighter{
         }
 
 
+    }
+    
+    @Override
+    public void Chase() {
+    	
     }
 
     @Override
