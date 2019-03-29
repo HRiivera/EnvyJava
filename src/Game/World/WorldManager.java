@@ -151,7 +151,7 @@ public class WorldManager {
 		
 		
 		//Rock
-		//worldWalls.add(new Walls(handler,1640,75,100,100, "Block"));
+		worldWalls.add(new Walls(handler,1640,75,100,100, "Block"));
 		
 		
 		

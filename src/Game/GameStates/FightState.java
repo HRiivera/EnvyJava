@@ -86,8 +86,10 @@ public class FightState extends InWorldState{
         playerRect = new Rectangle( (int) handler.getWidth() / 5, entityY, 100, 100);
         if(this.enemy.name == "Rayquaza")
         enemyRect = new Rectangle((int) handler.getWidth() * 4/ 5 - 800,entityY-500*3/4*2, 695*2, 500*2);
-        else 
-        	enemyRect = new Rectangle((int) handler.getWidth() * 4/ 5 - 70,entityY, 70, 70);
+        else if(this.enemy.name == "Groudon")
+            enemyRect = new Rectangle((int) handler.getWidth() * 4/ 5 - 800,entityY-650, 106*10, 79*10);
+        else
+        	enemyRect = new Rectangle((int) handler.getWidth() * 4/ 5 -70,entityY, 70, 70);
         setUiManager();
         backgroundSelect(prevState);
 
@@ -787,7 +789,7 @@ public class FightState extends InWorldState{
 	        g.setFont((new Font("IMPACT", Font.ITALIC, 25)));
 	        g.drawString(dmg , playerRect.x, playerRect.y - 20);
 	 
-	        if(enemy.name.equalsIgnoreCase("Rayquaza")) {
+	        if(enemy.name.equalsIgnoreCase("Rayquaza") || enemy.name.equalsIgnoreCase("Groudon")) {
 	        	if (enemyRect.x >= (handler.getWidth() * 4 / 5) -790 && enemyRect.x <= (handler.getWidth() * 4 / 5) - 690) {
 	                enemyRect.x = (handler.getWidth() * 4 / 5-800);
 	                Eattacking = false;

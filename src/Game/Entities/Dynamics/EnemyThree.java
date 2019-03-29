@@ -13,28 +13,28 @@ import Main.Handler;
 import Resources.Animation;
 import Resources.Images;
 
-public class EnemyTwo extends BaseHostileEntity implements Fighter{
+public class EnemyThree extends BaseHostileEntity implements Fighter{
 
-    Rectangle enemyTwo;
+    Rectangle enemyThree;
     int width, height;
     private Animation animIdle;
     private int animSpeed = 300;
 
-    public EnemyTwo(Handler handler, int xPosition, int yPosition, String state, String name, String area, BufferedImage[] animFrames) {
+    public EnemyThree(Handler handler, int xPosition, int yPosition, String state, String name, String area, BufferedImage[] animFrames) {
         super(handler, yPosition, yPosition,state,name,area,animFrames);
-        width = 64*3;
-        height = 68*3;
+        width = 40*3;
+        height = 40*3;
         speed = 1;
         type="EnemyTwo";
         this.setXOffset(xPosition);
         this.setYOffset(yPosition);
 
         this.foundState = state;
-        enemyTwo = new Rectangle();
+        enemyThree = new Rectangle();
         
         	
 
-        animIdle = new Animation(animSpeed, Images.ray_idle);
+        animIdle = new Animation(animSpeed, Images.grou_idle);
         
         
     }
@@ -55,20 +55,20 @@ public class EnemyTwo extends BaseHostileEntity implements Fighter{
 
         if(handler.getArea().equals(this.Area)) {
             if (!Player.checkInWorld) {
-                enemyTwo = new Rectangle((int) (handler.getXDisplacement() + getXOffset()),
+                enemyThree = new Rectangle((int) (handler.getXDisplacement() + getXOffset()),
                         (int) (handler.getYDisplacement() + getYOffset()), width, height);
 
             } else {
-                enemyTwo = new Rectangle((int) (handler.getXInWorldDisplacement() + getXOffset()),
+                enemyThree = new Rectangle((int) (handler.getXInWorldDisplacement() + getXOffset()),
                         (int) (handler.getYInWorldDisplacement() + getYOffset()), width, height);
 
             }
 
             g2.setColor(Color.black);
 
-            g2.drawImage(animIdle.getCurrentFrame(),enemyTwo.x,enemyTwo.y,enemyTwo.width,enemyTwo.height,null);
+            g2.drawImage(animIdle.getCurrentFrame(),enemyThree.x,enemyThree.y,enemyThree.width,enemyThree.height,null);
 
-            if (enemyTwo.intersects(handler.getEntityManager().getPlayer().getCollision())) {
+            if (enemyThree.intersects(handler.getEntityManager().getPlayer().getCollision())) {
                 handler.getEntityManager().getPlayer().facing = "Left";
                 State.setState(new FightState(handler, this, this.Area));
             }
@@ -84,7 +84,7 @@ public class EnemyTwo extends BaseHostileEntity implements Fighter{
 
     @Override
     public Rectangle getCollision() {
-        return enemyTwo;
+        return enemyThree;
     }
 
     //GETTERS AND SETTERS FOR FIGHT STATS

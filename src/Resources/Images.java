@@ -71,7 +71,8 @@ public class Images {
 	
 	public static SpriteSheet raySheet;
 	public static BufferedImage[] ray_idle;
-
+	public static SpriteSheet grouSheet;
+	public static BufferedImage[] grou_idle;
 
 	public static SpriteSheet playerSheet;
 	public static BufferedImage[] player_front;
@@ -83,10 +84,12 @@ public class Images {
 	public static BufferedImage[] PEnemyIdle;
 	public static BufferedImage[] WEnemyIdle;
 	public static BufferedImage[] REnemyIdle;
+	public static BufferedImage[] GEnemyIdle;
 
 	public static SpriteSheet PEnemySheet;
 	public static SpriteSheet WEnemySheet;
 	public static SpriteSheet REnemySheet;
+	public static SpriteSheet GEnemySheet;
 
 	public static BufferedImage QST;
 
@@ -180,12 +183,14 @@ public class Images {
 		pika_idle = new BufferedImage[8];
 		
 		ray_idle = new BufferedImage[3];
+		grou_idle = new BufferedImage[2];
 		
 		
 
 		PEnemyIdle = new BufferedImage[7];
 		WEnemyIdle = new BufferedImage[3];
 		REnemyIdle = new BufferedImage[48];
+		GEnemyIdle = new BufferedImage[50];
 
 		Enemy = new BufferedImage[8];
 		SEnemy = new BufferedImage[8];
@@ -226,6 +231,7 @@ public class Images {
 			PEnemySheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/P-enemy.png")));
 			WEnemySheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/W-enemy.png")));
 			REnemySheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/RayquazaSheetT.png")));
+			GEnemySheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/GroudonSheet.png")));
 
 			projectTitle = ImageIO.read(getClass().getResourceAsStream("/Buttons/ProjectWord.png"));
 			ghost = ImageIO.read(getClass().getResourceAsStream("/Sheets/ghost.png"));
@@ -338,6 +344,18 @@ public class Images {
 			for(int i=0;i<2;i++) {
 				REnemyIdle[i+46] = REnemySheet.crop(i*139, 652, 139, 100);
 			}
+			
+			
+			
+			
+			for(int j=0;j<5;j++) {
+			for(int i=0;i<10;i++) {
+				GEnemyIdle[i+10*j] = GEnemySheet.crop(i*106, 50+90*j, 106, 79);
+			}
+			}
+			
+			
+			
 
 			playerSheet =  new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/player.png")));
 
@@ -406,6 +424,10 @@ public class Images {
 			ray_idle[1] = raySheet.crop(67, 39, 64, 68);
 			ray_idle[2] = raySheet.crop(134, 39, 64, 68);
 
+			
+			grouSheet = new SpriteSheet(ImageIO.read(getClass().getResourceAsStream("/Sheets/GroudonTiny.png")));
+			grou_idle[0] = grouSheet.crop(120, 18, 40, 40);
+			grou_idle[1] = grouSheet.crop(120, 18, 40, 40);
 
 
 			Enemy[0] = ImageIO.read(getClass().getResourceAsStream("/Sheets/E1.png"));

@@ -25,9 +25,11 @@ public class TownEntity extends BaseStaticEntity {
 	int showtext=0;
 	int showtext2=0;
 	int showtext3=0;
-	String textdialogue= "Defeat an Enemy to unlock a skill ";
+	int showtext4=0;
+	String textdialogue= "Defeat an Enemy to unlock a skill.";
 	String textdialogue2="You've unclocked a new  Freeze skill,";
-	String textdialogue3=" and a new cave area to explore!";
+	String textdialogue3="and a new cave area to explore!";
+	String textdialogue4="Go defeat Rayquaza and Groudon!";
 
 	private Boolean pressed = false;
 
@@ -75,33 +77,41 @@ public class TownEntity extends BaseStaticEntity {
 
 	@Override
 	public void tick() {
-		
-		
+
+
 		if(text==true) {
-			
+
 			counter++;
 			if(counter>2) {
-			
-		 if(showtext<=textdialogue.length()-1) {
-				
-				showtext++;
-				
-			}if(showtext2<=textdialogue2.length()-1) {
-				showtext2++;
-				
-			}else if(showtext3<=textdialogue3.length()-1) {
-				showtext3++;
-			}
-			counter=0;
+
+				if(showtext<=textdialogue.length()-1) {
+
+					showtext++;
+
+				}if(showtext2<=textdialogue2.length()-1) {
+					showtext2++;	
+				}
+				else{
+					if(showtext3<=textdialogue3.length()-1) {
+						showtext3++;
+					}
+					else{
+						if(showtext4<=textdialogue4.length()-1) {
+							showtext4++;
+						}
+					}
+				}
+				counter=0;
 			} 
-			
-			
 		}
-		
 		else {
 			counter=0;
+			showtext=0;
+			showtext2=0;
+			showtext3=0;
+			showtext4=0;
 		}
-		
+
 
 		ir.x = handler.getXInWorldDisplacement() + originalX+25;
 		ir.y = handler.getYInWorldDisplacement() + originalY+200;
@@ -153,11 +163,12 @@ public class TownEntity extends BaseStaticEntity {
 				g.setFont(new Font("Times New Roman",Font.BOLD,20));
 
 				if(handler.getEntityManager().getPlayer().getQuestComplete()) {
-					
+
 					g.drawImage(Images.textbox, handler.getWidth()/2-250, handler.getHeight()-194, 500,194,null);
 					g.drawImage(Images.professorhead, handler.getWidth()/2-250, handler.getHeight()-150, 179,106,null);
 					g.drawString(textdialogue2.substring(0,showtext2),(int)(xPosition-this.getXOffset())+865,(int)(yPosition-this.getYOffset())+975);
-					g.drawString(textdialogue3.substring(0,showtext3),(int)(xPosition-this.getXOffset())+875,(int)(yPosition-this.getYOffset())+1000);
+					g.drawString(textdialogue3.substring(0,showtext3),(int)(xPosition-this.getXOffset())+865,(int)(yPosition-this.getYOffset())+1000);
+					g.drawString(textdialogue4.substring(0,showtext4),(int)(xPosition-this.getXOffset())+865,(int)(yPosition-this.getYOffset())+1025);
 					handler.getEntityManager().getPlayer().setQuestTurnedIn(true);
 					handler.getEntityManager().getPlayer().setSkill("Freeze");
 					System.out.println("Quest Turned In");			
